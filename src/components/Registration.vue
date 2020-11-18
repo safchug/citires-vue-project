@@ -1,0 +1,150 @@
+<template>
+  <div v-if="isRegistered">
+    <v-container>
+      <v-row>
+        You`ve been successfuly registred
+      </v-row>
+    </v-container>
+  </div>
+  <v-form v-else-if="!isRegistered" v-model="valid">
+    <v-container>
+      <v-row>
+        <v-col
+            cols="12"
+            md="4"
+        >
+          <v-text-field
+              v-model="firstname"
+              :rules="nameRules"
+              :counter="10"
+              label="First name"
+              required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+            cols="12"
+            md="4"
+        >
+          <v-text-field
+              v-model="lastname"
+              :rules="nameRules"
+              :counter="10"
+              label="Last name"
+              required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+            cols="12"
+            md="4"
+        >
+          <v-text-field
+              v-model="birthday"
+              :counter="10"
+              label="Birthday"
+              required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+            cols="12"
+            md="4"
+        >
+          <v-text-field
+              v-model="mail"
+              :rules="emailRules"
+              label="E-mail"
+              required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+            cols="12"
+            md="4"
+        >
+          <v-text-field
+              v-model="password"
+              :type="inputType"
+              :rules="passwordRules"
+              label="Password"
+              required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col
+            cols="12"
+            md="4"
+        >
+          <v-text-field
+              v-model="passwordRepition"
+              :type="inputType"
+              :rules="repeatPasswordRules"
+              label="Repeat password"
+              required
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <tamplate v-if="isFailure">
+        <v-row>
+          {{message}}}
+        </v-row>
+      </tamplate>
+        <v-row>
+        <v-btn color="secondary"
+               @click.prevent="regist({firstname, lastname, mail, birthday, password})"
+        >Rigister</v-btn>
+      </v-row>
+
+    </v-container>
+
+  </v-form>
+</template>
+
+<script>
+import {mapActions, mapGetters} from 'vuex';
+
+export default {
+  data: () => ({
+    valid: false,
+    firstname: '',
+    lastname: '',
+    birthday: '',
+    mail: '',
+    password: '',
+    passwordRepition: '',
+
+    nameRules: [
+      v => !!v || 'Name is required',
+      v => v.length <= 10 || 'Name must be less than 10 characters',
+    ],
+    emailRules: [
+      v => !!v || 'E-mail is required',
+      v => /.+@.+/.test(v) || 'E-mail must be valid',
+    ],
+    inputType: 'password',
+    passwordRules: [
+      v => !!v || 'Password is required',
+      v => v.length >= 6 || 'Passwword must be more than 6 characters'
+    ]
+  }),
+  computed: {
+    goAway(){ return true},
+    ...mapGetters(['isRegistered', 'isFailure', 'message']),
+    repeatPasswordRules() {
+      let rules = [];
+      if(this.password && this.passwordRepition) {
+        const rule = v => this.password === this.passwordRepition || 'Passwords dont match';
+        rules.push(rule);
+      }
+      return rules;
+    }
+  },
+  methods: mapActions(['regist'])
+}
+</script>
