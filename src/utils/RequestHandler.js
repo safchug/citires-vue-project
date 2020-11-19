@@ -64,12 +64,50 @@ export default {
         let response;
         try {
             let addquery = query? `?query=${query}`: ``;
+            console.log(addquery);
             response = await axios({
                 method: 'get',
                 url: `http://localhost:3000/api/cities${addquery}`
             });
             return response;
         } catch (err) {
+            response = {data: 'Something went wrong', status: 500};
+            return response;
+        }
+    },
+    async fetchCitiesWithId(id) {
+        let response;
+        console.log(`http://localhost:3000/api/cities/${id}`);
+        try {
+            response = await axios({
+                method: 'get',
+                url: `http://localhost:3000/api/cities/${id}`
+            });
+            return response;
+        } catch (err) {
+            response = {data: 'Something went wrong', status: 500};
+            return response;
+        }
+    },
+    async deleteCity(id, token) {
+        let response;
+        try {
+            response = await axios({
+                method: 'delete',
+                url: `http://localhost:3000/api/cities/${id}`,
+                headers: {'Authorization': `beaber ${token}`}
+            });
+            return response;
+        } catch (err) {
+            if(err.message.includes('401')){
+                response = {data: 'Access is forbiten', status: 401};
+                return response;
+            }
+            if(err.message.includes('403')) {
+                response = {data: 'You can`t do it', status: 403};
+                return response;
+            }
+
             response = {data: 'Something went wrong', status: 500};
             return response;
         }
