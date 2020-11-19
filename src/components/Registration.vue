@@ -2,7 +2,10 @@
   <div v-if="isRegistered">
     <v-container>
       <v-row>
-        You`ve been successfuly registred
+        <v-alert
+            type="info"
+            color="orange"
+        >You`ve been successfuly registred</v-alert>
       </v-row>
     </v-container>
   </div>
@@ -90,11 +93,13 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <tamplate v-if="isFailure">
+      <template v-if="isFailure">
         <v-row>
-          {{message}}}
+        <v-alert
+            type="error"
+        >{{message}}</v-alert>
         </v-row>
-      </tamplate>
+      </template>
         <v-row>
         <v-btn color="secondary"
                @click.prevent="regist({firstname, lastname, mail, birthday, password})"
@@ -118,6 +123,7 @@ export default {
     mail: '',
     password: '',
     passwordRepition: '',
+    inputType: 'password',
 
     nameRules: [
       v => !!v || 'Name is required',
@@ -127,14 +133,12 @@ export default {
       v => !!v || 'E-mail is required',
       v => /.+@.+/.test(v) || 'E-mail must be valid',
     ],
-    inputType: 'password',
     passwordRules: [
       v => !!v || 'Password is required',
       v => v.length >= 6 || 'Passwword must be more than 6 characters'
     ]
   }),
   computed: {
-    goAway(){ return true},
     ...mapGetters(['isRegistered', 'isFailure', 'message']),
     repeatPasswordRules() {
       let rules = [];

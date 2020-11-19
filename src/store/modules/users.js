@@ -1,4 +1,6 @@
 import axios from 'axios';
+import router from '@/components/Router';
+
 import RequestHandler from "@/utils/RequestHandler";
 
 export default {
@@ -7,11 +9,29 @@ export default {
             let responce = await RequestHandler.registUser(data);
             if(responce.status === 200) {
                 ctx.commit('setRegistred');
-            } else {
+            } else if(responce.status === 409){
                 ctx.commit('setFailure', 'This mail is already taken');
-            }/* else {
+            } else {
                 ctx.commit('setFailure', 'Something went wrong');
-            }*/
+            }
+        },
+        async login(ctx, data) {
+            try {
+                let response = await RequestHandler.loginUser(data);
+                if(response.status === 200) {
+                    localStorage.setItem('accs_tkn', response.data);
+                    router.push('/');
+                } if(response.status === 401) {
+                    ctx.commit('setFailure', 'Your mail or password is incorrect');
+                } else if(response.status === 422){
+                    ctx.commit('setFailure', response.data);
+                } else {
+                    ctx.commit('setFailure', response.data);
+                }
+            } catch (err) {
+                ctx.commit('setFailure', 'Something went wrong');
+                console.log(err);
+            }
         }
     },
     mutations:{
