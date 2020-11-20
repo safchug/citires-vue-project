@@ -6,6 +6,7 @@
         sm="6"
         md="8"
     >
+      <v-btn v-if="user" @click="GoToAddCityForm()">AddCity</v-btn>
   <v-simple-table>
     <template v-slot:default>
       <thead>
@@ -27,13 +28,15 @@
         <td>{{ city.name }}</td>
         <td>{{ city.population }}</td>
         <td width="285"><v-btn @click="openCityInfo(city.id)">info</v-btn>
-        <v-btn @click="updateCityForm(city.id)">Update</v-btn>
-        <v-btn @click="deleteCityWithId(city.id)">Delete</v-btn></td>
+          <template v-if="user && user.id === city.userId">
+            <v-btn @click="updateCityForm(city.id)">Update</v-btn>
+            <v-btn @click="deleteCityWithId(city.id)">Delete</v-btn>
+          </template>
+        </td>
       </tr>
       </tbody>
     </template>
   </v-simple-table>
-      <v-btn @click="GoToAddCityForm()">AddCity</v-btn>
     </v-col>
   </v-row>
 </v-container>
@@ -48,7 +51,7 @@ export default {
   data: ()=> ({
 
   }),
-  computed: mapGetters(['cities', 'failureMessage']),
+  computed: mapGetters(['cities', 'failureMessage', 'user']),
   methods: {
     ...mapActions(['fetchCities', 'deleteCity']),
     openCityInfo(id) {
