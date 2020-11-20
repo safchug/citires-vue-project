@@ -11,13 +11,22 @@
       </v-btn>
 
         <v-spacer></v-spacer>
-
+      <template v-if="user">
+        <v-row justify="end">
+          {{user.name}}
+        </v-row>
+        <v-btn text @click="logout()">
+          Log out
+        </v-btn>
+      </template>
+      <template v-else>
         <v-btn text to="/login">
           Log in
         </v-btn>
         <v-btn text to="/registration">
           Sign in
         </v-btn>
+      </template>
       </v-app-bar>
 
 
@@ -32,7 +41,7 @@
 </template>
 
 <script>
-
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
   name: 'App',
@@ -43,5 +52,11 @@ export default {
     //
     drawer: true
   }),
+  computed: mapGetters(['user']),
+  methods: mapActions(['auth', 'logout']),
+  mounted() {
+    console.log('mounted');
+    this.auth();
+  }
 };
 </script>

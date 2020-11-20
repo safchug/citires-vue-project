@@ -19,7 +19,9 @@ export default {
             try {
                 let response = await RequestHandler.loginUser(data);
                 if(response.status === 200) {
-                    localStorage.setItem('accs_tkn', response.data);
+                    console.log(data);
+                    localStorage.setItem('accs_tkn', response.data.accessToken);
+                    ctx.commit('setUser', response.data.user);
                     router.push('/');
                 } if(response.status === 401) {
                     ctx.commit('setFailure', 'Your mail or password is incorrect');
@@ -32,6 +34,27 @@ export default {
                 ctx.commit('setFailure', 'Something went wrong');
                 console.log(err);
             }
+        },
+        async auth(ctx, user) {
+            try{
+
+                let token = localStorage.getItem('accs_tkn');
+                if(token) {
+                    console.log(token);
+                    let response = await RequestHandler.auth(token);
+                    if(response.status === 200){
+                        ctx.commit('setUser', response.data);
+                    } else {
+                        localStorage.removeItem('accs_tkn');
+                    }
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        async logout(ctx){
+            ctx.commit('setUser', null);
+            localStorage.removeItem('accs_tkn');
         }
     },
     mutations:{
@@ -41,12 +64,16 @@ export default {
         setFailure(state, msg) {
             state.isFailure = true;
             state.message = msg;
+        },
+        setUser(state, user) {
+            state.user = user;
         }
     },
     state: {
         isRegistered: false,
         isFailure: false,
-        message: ''
+        message: '',
+        user: null
     },
     getters: {
         isRegistered(state){
@@ -57,6 +84,9 @@ export default {
         },
         message(state) {
             return state.message;
+        },
+        user(state) {
+            return state.user;
         }
     }
 }

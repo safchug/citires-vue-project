@@ -59,6 +59,31 @@ export default {
             return response;
         }
     },
+    async auth(token){
+        let response;
+        try {
+            response = await axios({
+                method: 'post',
+                url:'http://localhost:3000/api/auth',
+                headers: {'Authorization': `beaber ${token}`},
+                body : {}
+            });
+            console.log(response);
+            return response;
+        } catch (err) {
+            console.log('err', err.message);
+            if(err.message.includes('401')) {
+                response = {data: 'Access is forbiten',
+                    status: 401}
+                return response;
+            }
+
+            response = {data: 'Something went wrong',
+                status: 500}
+
+            return response;
+        }
+    },
 
     async fetchCities(query) {
         let response;
