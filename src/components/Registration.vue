@@ -9,7 +9,7 @@
       </v-row>
     </v-container>
   </div>
-  <v-form v-else-if="!isRegistered" v-model="valid">
+  <v-form v-else-if="!isRegistered" v-model="valid" ref="form">
     <v-container>
       <v-row>
         <v-col
@@ -47,6 +47,7 @@
           <v-text-field
               v-model="birthday"
               :counter="10"
+              :rules="birthdayRules"
               label="Birthday"
               required
           ></v-text-field>
@@ -102,7 +103,7 @@
       </template>
         <v-row>
         <v-btn color="secondary"
-               @click.prevent="regist({firstname, lastname, mail, birthday, password})"
+               @click.prevent="validateAndRegist()"
         >Rigister</v-btn>
       </v-row>
 
@@ -136,12 +137,19 @@ export default {
     passwordRules: [
       v => !!v || 'Password is required',
       v => v.length >= 6 || 'Passwword must be more than 6 characters'
-    ]
+    ],
+    birthdayRules: [
+      v => !!v || 'Birthday is required',
+    ],
   }),
   computed: {
     ...mapGetters(['isRegistered', 'isFailure', 'message']),
     repeatPasswordRules() {
       let rules = [];
+
+      const passReq = v => !!v || 'To repeat pasword is required';
+      rules.push(passReq);
+
       if(this.password && this.passwordRepition) {
         const rule = v => this.password === this.passwordRepition || 'Passwords dont match';
         rules.push(rule);
@@ -149,6 +157,22 @@ export default {
       return rules;
     }
   },
-  methods: mapActions(['regist'])
+  methods: {
+    ...mapActions(['regist']),
+    validateAndRegist(){
+      this.$refs.form.validate();
+      if(this.valid){
+        let data = {
+          firstname: this.firstname,
+          lastname: this.lastname,
+          mail: this.mail,
+          birthday: this.birthday,
+          password: this.password
+        }
+        this.regist(data);
+      }
+    }
+  }
+
 }
 </script>

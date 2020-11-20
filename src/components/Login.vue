@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="valid" >
+  <v-form v-model="valid" ref="form">
     <v-container>
       <v-row>
         <v-col
@@ -38,7 +38,7 @@
       </template>
       <v-row>
         <v-btn color="secondary"
-               @click.prevent="login({mail, password})"
+               @click.prevent="validateAndLogin()"
         >Log in</v-btn>
       </v-row>
     </v-container>
@@ -63,6 +63,15 @@ export default {
     ]
   }),
   computed: mapGetters(['isFailure', 'message']),
-  methods: mapActions(['login'])
+  methods: {
+    ...mapActions(['login']),
+    validateAndLogin(){
+      this.$refs.form.validate();
+      if(this.valid) {
+        let data = {mail: this.mail, password: this.password};
+        this.login(data);
+      }
+    }
+  },
 }
 </script>
