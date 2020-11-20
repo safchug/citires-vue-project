@@ -53,13 +53,15 @@ export default {
             }
         },
         async logout(ctx){
-            ctx.commit('setUser', null);
+            ctx.commit('clear');
             localStorage.removeItem('accs_tkn');
         }
     },
     mutations:{
         setRegistred(state){
             state.isRegistered = true;
+            state.isFailure = false;
+            state.message = '';
         },
         setFailure(state, msg) {
             state.isFailure = true;
@@ -67,6 +69,12 @@ export default {
         },
         setUser(state, user) {
             state.user = user;
+        },
+        clear(state) {
+            state.user = null;
+            state.isRegistered = false;
+            state.isFailure = false;
+            state.message = '';
         }
     },
     state: {
