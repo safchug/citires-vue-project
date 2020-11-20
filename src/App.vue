@@ -55,7 +55,6 @@ export default {
   computed: mapGetters(['user']),
   methods: mapActions(['auth', 'logout']),
   mounted() {
-    console.log('mounted');
     this.auth();
   }
 };
