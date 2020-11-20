@@ -32,7 +32,7 @@
         <v-btn
             color="orange"
             text
-            @click="addCity()"
+            @click="add()"
         >
           Add
         </v-btn>
@@ -66,14 +66,13 @@ export default {
   methods: {
     ...mapActions(['addCity']),
     add() {
-      let city = {
-       name: this.name,
-        location: this.location,
-        population: this.population,
-        area: this.area,
-        found: this.found};
-
-      console.log(city);
+      let city ={};
+      city.name = this.name;
+      city.location =  this.location;
+      city.population = this.population;
+      city.area = this.area;
+      city.found = this.found;
+      console.log('city', city);
       this.addCity(city);
     },
     comeBack() {
