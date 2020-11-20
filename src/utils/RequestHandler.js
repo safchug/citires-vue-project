@@ -92,6 +92,7 @@ export default {
     async deleteCity(id, token) {
         let response;
         try {
+            console.log( `http://localhost:3000/api/cities/${id}`);
             response = await axios({
                 method: 'delete',
                 url: `http://localhost:3000/api/cities/${id}`,
@@ -111,5 +112,46 @@ export default {
             response = {data: 'Something went wrong', status: 500};
             return response;
         }
+    },
+    async updateCity(id, token, data) {
+        let response;
+        try {
+            console.log('action: ', data);
+            response = await axios({
+                method: 'put',
+                url: `http://localhost:3000/api/cities/${id}`,
+                headers: {'Authorization': `beaber ${token}`},
+                data
+            });
+            return response;
+        } catch (err) {
+            if(err.message.includes('403')) {
+                response = {data: 'You can`t do it', status: 403};
+                return response;
+            }
+
+            response = {data: 'Something went wrong', status: 500};
+            return response;
+        }
+
+    },
+    async addCity(city, token) {
+            let response;
+            try {
+                console.log(city);
+                response = await axios({
+                    method: 'post',
+                    url:'http://localhost:3000/api/cities',
+                    headers: {'Authorization': `beaber ${token}`},
+                    data: city
+                });
+                console.log(response);
+                return response;
+            } catch (err) {
+                response = {data: 'Something went wrong',
+                    status: 500}
+
+                return response;
+            }
     }
 }

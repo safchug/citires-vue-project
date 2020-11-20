@@ -27,12 +27,13 @@
         <td>{{ city.name }}</td>
         <td>{{ city.population }}</td>
         <td width="285"><v-btn @click="openCityInfo(city.id)">info</v-btn>
-        <v-btn @click="openCityInfo(city.id)">Update</v-btn>
+        <v-btn @click="updateCityForm(city.id)">Update</v-btn>
         <v-btn @click="deleteCityWithId(city.id)">Delete</v-btn></td>
       </tr>
       </tbody>
     </template>
   </v-simple-table>
+      <v-btn @click="GoToAddCityForm()">AddCity</v-btn>
     </v-col>
   </v-row>
 </v-container>
@@ -55,6 +56,12 @@ export default {
     },
     deleteCityWithId(id) {
       this.deleteCity(id);
+    },
+    updateCityForm(id){
+      router.push(`/update/${id}`);
+    },
+    GoToAddCityForm(){
+      router.push('/addcity');
     }
   },
   mounted() {

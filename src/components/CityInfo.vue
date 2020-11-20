@@ -27,11 +27,17 @@
         <v-row>
           <strong>Mail: </strong>{{city.user.mail}}
         </v-row>
+        <v-row v-if="failureMessage">
+          <v-alert
+              type="error"
+          >{{failureMessage}}</v-alert>
+        </v-row>
       </v-card-text>
       <v-card-actions>
         <v-btn
             color="orange"
             text
+            @click="updateCity(city.id)"
         >
           Update
         </v-btn>
@@ -39,8 +45,16 @@
         <v-btn
             color="orange"
             text
+            @click="deleteCityWithId(city.id)"
         >
           Delete
+        </v-btn>
+        <v-btn
+            color="orange"
+            text
+            @click="comeBack()"
+        >
+          Come back
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -54,10 +68,21 @@ export default {
   data: ()=> ({
 
   }),
-  computed: mapGetters(['city', 'failureMessage']),
-  methods: mapActions(['fetchCitiesWithId']),
-  mounted() {
-    this.fetchCitiesWithId(this.$route.params.id);
+    computed: mapGetters(['city', 'failureMessage']),
+    methods: {
+      ...mapActions(['fetchCityWithId', 'deleteCity']),
+      deleteCityWithId(id) {
+        this.deleteCity(id);
+      },
+      updateCity(id){
+        this.$router.push(`/update/${id}`);
+      },
+      comeBack(){
+        this.$router.push('/');
+      }
+    },
+    mounted() {
+      this.fetchCityWithId(this.$route.params.id);
+    }
   }
-}
 </script>
