@@ -34,6 +34,7 @@
         </v-row>
       </v-card-text>
       <v-card-actions>
+        <template v-if="user && user.id === city.userId">
         <v-btn
             color="orange"
             text
@@ -49,6 +50,7 @@
         >
           Delete
         </v-btn>
+        </template>
         <v-btn
             color="orange"
             text
@@ -68,7 +70,7 @@ export default {
   data: ()=> ({
 
   }),
-    computed: mapGetters(['city', 'failureMessage']),
+    computed: mapGetters(['city', 'failureMessage', 'user']),
     methods: {
       ...mapActions(['fetchCityWithId', 'deleteCity']),
       deleteCityWithId(id) {
