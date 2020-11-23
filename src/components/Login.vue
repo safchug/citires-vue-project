@@ -1,5 +1,6 @@
 <template>
-  <v-form v-model="valid" ref="form">
+  <v-form v-model="valid" ref="form"
+          @submit.prevent="validateAndLogin()">
     <v-container>
       <v-row>
         <v-col
@@ -29,24 +30,22 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <template v-if="isFailure">
+      <template v-if="error">
         <v-row>
           <v-alert
               type="error"
-          >{{message}}</v-alert>
+          >{{error}}</v-alert>
         </v-row>
       </template>
       <v-row>
-        <v-btn color="secondary"
-               @click.prevent="validateAndLogin()"
-        >Log in</v-btn>
+        <v-btn type="submit" color="secondary">Log in</v-btn>
       </v-row>
     </v-container>
   </v-form>
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
+import {mapActions} from 'vuex';
 
 export default {
   data:()=> ({
@@ -54,6 +53,7 @@ export default {
     mail: '',
     password: '',
     inputType: 'password',
+    error: '',
     mailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+/.test(v) || 'E-mail must be valid',
@@ -62,14 +62,18 @@ export default {
       v => !!v || 'Password is required',
     ]
   }),
-  computed: mapGetters(['isFailure', 'message']),
   methods: {
     ...mapActions(['login']),
-    validateAndLogin(){
+    async validateAndLogin(){
       this.$refs.form.validate();
       if(this.valid) {
         let data = {mail: this.mail, password: this.password};
-        this.login(data);
+        let result = await this.login(data);
+        if(result === 'ok') {
+          this.$router.push('/');
+        } else {
+          this.error = result;
+        }
       }
     }
   },

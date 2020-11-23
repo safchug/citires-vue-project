@@ -4,6 +4,8 @@
           class="mx-auto my-12"
           max-width="374"
       >
+
+        <template v-if="!err">
         <v-card-title >{{city.name}}</v-card-title>
         <v-card-text>
           <v-row>
@@ -43,12 +45,20 @@
           </v-btn>
 
         </v-card-actions>
+        </template>
+          <template v-else>
+            <v-row>
+              <v-alert
+                  type="error"
+              >{{err}}</v-alert>
+            </v-row>
+          </template>
       </v-card>
     </v-container>
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
   data: ()=> ({
@@ -56,28 +66,48 @@ export default {
     location: '',
     population: '',
     area: '',
-    found: ''
+    found: '',
+    err: '',
+    updateStus: ''
   }),
   computed: {
-    ...mapGetters(['city', 'failureMessage', 'updateStus']),
+    ...mapState({
+      city: state => state.cities.city
+    })
   },
   methods: {
     ...mapActions(['fetchCityWithId', 'updateCityWithId']),
-    updateCity(id) {
+    async updateCity(id) {
       let data = {
         location: this.location,
         population: this.population,
         area: this.area,
         found: this.found};
       console.log(data);
-      this.updateCityWithId({id, data});
+      try {
+        let result = await this.updateCityWithId({id, data});
+        if(result === 'ok') {
+          this.updateStus = 'The city has been updated';
+        } else {
+          this.err = result;
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
     comeBack(){
       this.$router.push('/');
     }
   },
-  mounted() {
-    this.fetchCityWithId(this.$route.params.id);
+  async mounted() {
+    try{
+      let result = await this.fetchCityWithId(this.$route.params.id);
+      if(result !== 'ok') {
+        this.err = result;
+      }
+    } catch (err) {
+      console.log(err);
+    }
   },
 
   watch: {

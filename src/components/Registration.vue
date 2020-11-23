@@ -9,7 +9,8 @@
       </v-row>
     </v-container>
   </div>
-  <v-form v-else-if="!isRegistered" v-model="valid" ref="form">
+  <v-form v-else-if="!isRegistered" v-model="valid" ref="form" value
+          @submit.prevent="validateAndRegist()">
     <v-container>
       <v-row>
         <v-col
@@ -94,17 +95,15 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <template v-if="isFailure">
+      <template v-if="error">
         <v-row>
         <v-alert
             type="error"
-        >{{message}}</v-alert>
+        >{{error}}</v-alert>
         </v-row>
       </template>
         <v-row>
-        <v-btn color="secondary"
-               @click.prevent="validateAndRegist()"
-        >Rigister</v-btn>
+        <v-btn type="submit" color="secondary">Rigister</v-btn>
       </v-row>
 
     </v-container>
@@ -113,10 +112,12 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
+import {mapActions, mapState} from 'vuex';
 
 export default {
   data: () => ({
+    isRegistered: false,
+    error: '',
     valid: false,
     firstname: '',
     lastname: '',
@@ -143,7 +144,6 @@ export default {
     ],
   }),
   computed: {
-    ...mapGetters(['isRegistered', 'isFailure', 'message']),
     repeatPasswordRules() {
       let rules = [];
 
@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     ...mapActions(['regist']),
-    validateAndRegist(){
+    async validateAndRegist(){
       this.$refs.form.validate();
       if(this.valid){
         let data = {
@@ -169,7 +169,13 @@ export default {
           birthday: this.birthday,
           password: this.password
         }
-        this.regist(data);
+
+        let result = await this.regist(data);
+        if(result === 'ok') {
+          this.isRegistered = true;
+        } else {
+          this.error = result;
+        }
       }
     }
   }

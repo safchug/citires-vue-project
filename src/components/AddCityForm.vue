@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import {mapActions} from "vuex";
 
 export default {
   data: ()=> ({
@@ -58,14 +58,14 @@ export default {
     location: '',
     population: '',
     area: '',
-    found: ''
+    found: '',
+    addingStatus: ''
   }),
   computed: {
-    ...mapGetters(['addingStatus']),
   },
   methods: {
     ...mapActions(['addCity']),
-    add() {
+    async add() {
       let city ={};
       city.name = this.name;
       city.location =  this.location;
@@ -73,7 +73,16 @@ export default {
       city.area = this.area;
       city.found = this.found;
       console.log('city', city);
-      this.addCity(city);
+      try {
+        let result = await this.addCity(city);
+        if(result === 'ok') {
+          this.addingStatus = 'The city has been added';
+        } else  {
+          this.addingStatus = 'Something go wrong';
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
     comeBack() {
       this.$router.push('/');

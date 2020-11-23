@@ -5,43 +5,72 @@ import RequestHandler from "@/utils/RequestHandler";
 
 export default {
     actions:{
-        async regist(ctx, data){
-            let responce = await RequestHandler.registUser(data);
-            if(responce.status === 200) {
-                ctx.commit('setRegistred');
-            } else if(responce.status === 409){
-                ctx.commit('setFailure', 'This mail is already taken');
-            } else {
-                ctx.commit('setFailure', 'Something went wrong');
+        async regist(ctx, obj){
+            try {
+                let data = {
+                    name: `${obj.firstname} ${obj.lastname}`,
+                    mail: obj.mail,
+                    birthday: obj.birthday,
+                    password: obj.password};
+                console.log(data);
+                let response = await axios({
+                    method: 'post',
+                    url:'http://localhost:3000/api/registration',
+                    data
+                });
+
+                if(response.status === 200) {
+
+                    return 'ok';
+                }
+            } catch (err) {
+                console.log('err', err.message);
+                if(err.message.includes('409')) {
+                    return 'The user with this mail already exists';
+                }
+
+                return 'Something went wrong';
             }
         },
         async login(ctx, data) {
+            let response;
             try {
-                let response = await RequestHandler.loginUser(data);
+                console.log(data);
+                response = await axios({
+                    method: 'post',
+                    url:'http://localhost:3000/api/login',
+                    data
+                });
                 if(response.status === 200) {
-                    console.log(data);
                     localStorage.setItem('accs_tkn', response.data.accessToken);
                     ctx.commit('setUser', response.data.user);
-                    router.push('/');
-                } if(response.status === 401) {
-                    ctx.commit('setFailure', 'Your mail or password is incorrect');
-                } else if(response.status === 422){
-                    ctx.commit('setFailure', response.data);
-                } else {
-                    ctx.commit('setFailure', response.data);
+                    return 'ok';
                 }
             } catch (err) {
-                ctx.commit('setFailure', 'Something went wrong');
-                console.log(err);
+                console.log('err', err.message);
+                if(err.message.includes('401')) {
+                    return 'Bad credentials';
+                }
+
+                if(err.message.includes('422')) {
+                    return 'Enter login and password';
+                }
+                return 'Something went wrong';
             }
         },
-        async auth(ctx, user) {
+        async auth(ctx) {
             try{
 
                 let token = localStorage.getItem('accs_tkn');
                 if(token) {
                     console.log(token);
-                    let response = await RequestHandler.auth(token);
+                    let response = await axios({
+                        method: 'post',
+                        url:'http://localhost:3000/api/auth',
+                        headers: {'Authorization': `beaber ${token}`},
+                        body : {}
+                    });
+
                     if(response.status === 200){
                         ctx.commit('setUser', response.data);
                     } else {
@@ -49,52 +78,21 @@ export default {
                     }
                 }
             } catch (err) {
+                localStorage.removeItem('accs_tkn');
                 console.log(err);
             }
         },
-        async logout(ctx){
-            ctx.commit('clear');
+        logout(ctx){
+            ctx.commit('setUser', null);
             localStorage.removeItem('accs_tkn');
         }
     },
     mutations:{
-        setRegistred(state){
-            state.isRegistered = true;
-            state.isFailure = false;
-            state.message = '';
-        },
-        setFailure(state, msg) {
-            state.isFailure = true;
-            state.message = msg;
-        },
         setUser(state, user) {
             state.user = user;
-        },
-        clear(state) {
-            state.user = null;
-            state.isRegistered = false;
-            state.isFailure = false;
-            state.message = '';
         }
     },
     state: {
-        isRegistered: false,
-        isFailure: false,
-        message: '',
         user: null
-    },
-    getters: {
-        isRegistered(state){
-            return state.isRegistered;
-        },
-        isFailure(state) {
-            return state.isFailure;
-        },
-        message(state) {
-            return state.message;
-        },
-        user(state) {
-            return state.user;
-        }
     }
 }

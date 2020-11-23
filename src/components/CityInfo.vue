@@ -27,10 +27,10 @@
         <v-row>
           <strong>Mail: </strong>{{city.user.mail}}
         </v-row>
-        <v-row v-if="failureMessage">
+        <v-row v-if="err">
           <v-alert
               type="error"
-          >{{failureMessage}}</v-alert>
+          >{{err}}</v-alert>
         </v-row>
       </v-card-text>
       <v-card-actions>
@@ -64,17 +64,31 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import {mapState, mapActions} from 'vuex';
 
 export default {
-  data: ()=> ({
-
+  data: () => ({
+    err: ''
   }),
-    computed: mapGetters(['city', 'failureMessage', 'user']),
+    computed: {
+      ...mapState({
+        user: state => state.users.user,
+        city: state => state.cities.city
+      })
+    },
     methods: {
       ...mapActions(['fetchCityWithId', 'deleteCity']),
-      deleteCityWithId(id) {
-        this.deleteCity(id);
+      async deleteCityWithId(id) {
+        try {
+          let result = await this.deleteCity(id);
+          if(result === 'ok') {
+            this.$router.push('/');
+          } else {
+            this.err = result;
+          }
+        } catch (err) {
+          console.log(err);
+        }
       },
       updateCity(id){
         this.$router.push(`/update/${id}`);
@@ -83,8 +97,15 @@ export default {
         this.$router.push('/');
       }
     },
-    mounted() {
-      this.fetchCityWithId(this.$route.params.id);
+    async mounted() {
+      try {
+        let result = await this.fetchCityWithId(this.$route.params.id);
+        if(result !== 'ok') {
+          this.err = result;
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 </script>

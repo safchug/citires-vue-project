@@ -1,11 +1,12 @@
 <template >
 <v-container>
-  <v-row justify="center" >
+  <v-row v-if="!err" justify="center" >
     <v-col
         cols="3"
         sm="6"
         md="8"
     >
+
       <v-btn v-if="user" @click="GoToAddCityForm()">AddCity</v-btn>
   <v-simple-table>
     <template v-slot:default>
@@ -39,26 +40,49 @@
   </v-simple-table>
     </v-col>
   </v-row>
+  <v-row v-else justify="center" >
+    <v-col
+        cols="3"
+        sm="6"
+        md="8"
+    >
+      <v-alert
+          type="error"
+      >{{err}}</v-alert>
+    </v-col>
+  </v-row>
 </v-container>
 </template>
 
 <script>
 
-import {mapActions, mapGetters} from 'vuex';
+import {mapActions, mapGetters, mapState} from 'vuex';
 import router from '@/components/Router';
 
 export default {
-  data: ()=> ({
-
+  data: () => ({
+    err: '',
   }),
-  computed: mapGetters(['cities', 'failureMessage', 'user']),
+  computed: {
+    ...mapState({
+      user: state => state.users.user,
+      cities: state => state.cities.cities
+    })
+  },
   methods: {
     ...mapActions(['fetchCities', 'deleteCity']),
     openCityInfo(id) {
       router.push(`/city/${id}`);
     },
-    deleteCityWithId(id) {
-      this.deleteCity(id);
+    async deleteCityWithId(id) {
+      try {
+        let result = await this.deleteCity(id);
+        if(result !== 'ok') {
+          this.err = result;
+        }
+      } catch (err) {
+        console.log(err);
+      }
     },
     updateCityForm(id){
       router.push(`/update/${id}`);
@@ -67,8 +91,15 @@ export default {
       router.push('/addcity');
     }
   },
-  mounted() {
-    this.fetchCities();
+  async mounted() {
+    try {
+      let result = await this.fetchCities();
+      if(result !== 'ok') {
+        this.err = result;
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 </script>

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex';
+import {mapActions, mapState} from 'vuex';
 
 export default {
   name: 'App',
@@ -52,7 +52,11 @@ export default {
     //
     drawer: true
   }),
-  computed: mapGetters(['user']),
+  computed: {
+    ...mapState({
+      user: state => state.users.user
+    }),
+  },
   methods: mapActions(['auth', 'logout']),
   mounted() {
     this.auth();
