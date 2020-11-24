@@ -9,7 +9,6 @@
       <v-btn text light to="/">
         CitiesService
       </v-btn>
-
         <v-spacer></v-spacer>
       <template v-if="user">
         <v-row justify="end">
@@ -50,14 +49,17 @@ export default {
   },
   data: () => ({
     //
-    drawer: true
+    drawer: true,
+    search: ''
   }),
   computed: {
     ...mapState({
       user: state => state.users.user
     }),
   },
-  methods: mapActions(['auth', 'logout']),
+  methods: {
+    ...mapActions(['auth', 'logout'])
+  },
   mounted() {
     this.auth();
   }

@@ -6,8 +6,16 @@
         sm="6"
         md="8"
     >
-
-      <v-btn v-if="user" @click="GoToAddCityForm()">AddCity</v-btn>
+      <v-btn v-if="user"
+             @click="GoToAddCityForm()"
+      >AddCity</v-btn>
+      <v-row>
+      <v-text-field v-model="search"
+                    label="Searching"
+                    hide-details="auto"
+      ></v-text-field>
+      <v-btn @click="filterCities()">start rearchig</v-btn>
+      </v-row>
   <v-simple-table>
     <template v-slot:default>
       <thead>
@@ -62,6 +70,7 @@ import router from '@/components/Router';
 export default {
   data: () => ({
     err: '',
+    search: ''
   }),
   computed: {
     ...mapState({
@@ -89,6 +98,16 @@ export default {
     },
     GoToAddCityForm(){
       router.push('/addcity');
+    },
+    async filterCities(){
+      try {
+        let result = await this.fetchCities(this.search);
+        if(result !== 'ok') {
+          this.err = result;
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   },
   async mounted() {
