@@ -60,6 +60,7 @@ export default {
     ],
     passwordRules: [
       v => !!v || 'Password is required',
+      v => v.trim().length >= 6 || 'Password must be valid',
     ]
   }),
   methods: {
