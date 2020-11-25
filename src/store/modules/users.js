@@ -1,36 +1,13 @@
 import axios from 'axios';
-import router from '@/components/Router';
-
-import RequestHandler from "@/utils/RequestHandler";
 
 export default {
     actions:{
-        async regist(ctx, obj){
-            try {
-                let data = {
-                    name: `${obj.firstname} ${obj.lastname}`,
-                    mail: obj.mail,
-                    birthday: obj.birthday,
-                    password: obj.password};
-                console.log(data);
-                let response = await axios({
-                    method: 'post',
-                    url:'http://localhost:3000/api/registration',
-                    data
-                });
-
-                if(response.status === 200) {
-
-                    return 'ok';
-                }
-            } catch (err) {
-                console.log('err', err.message);
-                if(err.message.includes('409')) {
-                    return 'The user with this mail already exists';
-                }
-
-                return 'Something went wrong';
-            }
+        regist(ctx, data) {
+            return axios({
+                method: 'post',
+                url: 'http://localhost:3000/api/registration',
+                data
+            });
         },
         async login(ctx, data) {
             let response;

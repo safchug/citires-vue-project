@@ -10,7 +10,7 @@
     </v-container>
   </div>
   <v-form v-else-if="!isRegistered" v-model="valid" ref="form" value
-          @submit.prevent="validateAndRegist()">
+          @submit.prevent="submit()">
     <v-container>
       <v-row>
         <v-col
@@ -113,10 +113,12 @@
 
 <script>
 import {mapActions, mapState} from 'vuex';
+import User from "@/models/User";
 
 export default {
   data: () => ({
     isRegistered: false,
+    isMailTaken: false,
     error: '',
     valid: false,
     firstname: '',
@@ -134,7 +136,7 @@ export default {
     ],
     emailRules: [
       v => !!v || 'E-mail is required',
-      v => /.+@.+/.test(v) || 'E-mail must be valid',
+      v => /.+@.+/.test(v) || 'E-mail must be valid'
     ],
     passwordRules: [
       v => !!v || 'Password is required',
@@ -160,22 +162,25 @@ export default {
   },
   methods: {
     ...mapActions(['regist']),
-    async validateAndRegist(){
+    submit(){
       this.$refs.form.validate();
       if(this.valid){
-        let data = {
-          firstname: this.firstname,
-          lastname: this.lastname,
-          mail: this.mail,
-          birthday: this.birthday,
-          password: this.password
-        }
-
-        let result = await this.regist(data);
-        if(result === 'ok') {
-          this.isRegistered = true;
+        this.registUser();
+      }
+    },
+    async registUser() {
+      const user = new User(this.firstname, this.lastname,
+          this.mail, this.birthday, this.password);
+      try {
+        let result = await this.regist(user);
+        if(result) this.isRegistered = true;
+      } catch (err) {
+        if(err.response) {
+          if(err.response.status === 409) {
+            this.error = err.response.data.message;
+          }
         } else {
-          this.error = result;
+          this.error = 'Something went wrong';
         }
       }
     }

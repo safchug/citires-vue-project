@@ -1,5 +1,3 @@
-import RequestHandler from "@/utils/RequestHandler";
-import router from '@/components/Router';
 import axios from "axios";
 
 export default {
