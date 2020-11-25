@@ -14,7 +14,9 @@
                     label="Searching"
                     hide-details="auto"
       ></v-text-field>
-      <v-btn @click="filterCities()">start rearchig</v-btn>
+      <v-btn @click="filterCities()">
+        <v-icon dark>fas fa-search</v-icon>
+      </v-btn>
       </v-row>
   <v-simple-table>
     <template v-slot:default>
