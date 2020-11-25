@@ -10,31 +10,22 @@ export default {
             });
         },
         async login(ctx, data) {
-            let response;
-            try {
-                console.log(data);
-                response = await axios({
-                    method: 'post',
-                    url:'http://localhost:3000/api/login',
-                    data
-                });
-                if(response.status === 200) {
-                    localStorage.setItem('accs_tkn', response.data.accessToken);
-                    ctx.commit('setUser', response.data.user);
-                    return 'ok';
-                }
-            } catch (err) {
-                console.log('err', err.message);
-                if(err.message.includes('401')) {
-                    return 'Bad credentials';
-                }
 
-                if(err.message.includes('422')) {
-                    return 'Enter login and password';
-                }
-                return 'Something went wrong';
-            }
-        },
+            const response = await axios({
+                method: 'post',
+                url: 'http://localhost:3000/api/login',
+                data
+            });
+            const token = response.data.accessToken;
+            const user = response.data.user;
+            if(!token) throw new Error('There is no token in server response');
+            if(!user) throw new Error('There is no user in server response');
+            localStorage.setItem('accs_tkn', token);
+            ctx.commit('setUser', user);
+
+            return response;
+        }
+        ,
         async auth(ctx) {
             try{
 

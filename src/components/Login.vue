@@ -1,6 +1,6 @@
 <template>
   <v-form v-model="valid" ref="form"
-          @submit.prevent="validateAndLogin()">
+          @submit.prevent="submit()">
     <v-container>
       <v-row>
         <v-col
@@ -46,6 +46,7 @@
 
 <script>
 import {mapActions} from 'vuex';
+import LoginData from "@/models/LoginData";
 
 export default {
   data:()=> ({
@@ -65,18 +66,27 @@ export default {
   }),
   methods: {
     ...mapActions(['login']),
-    async validateAndLogin(){
+    submit() {
       this.$refs.form.validate();
       if(this.valid) {
-        let data = {mail: this.mail, password: this.password};
-        let result = await this.login(data);
-        if(result === 'ok') {
-          this.$router.push('/');
+        this.loginUser();
+      }
+    },
+    async loginUser() {
+      try {
+        const loginData = new LoginData(this.mail, this.password);
+        const result = await this.login(loginData);
+
+        if (result) this.$router.push('/');
+
+      } catch (err) {
+        if(err.response) {
+          this.error = err.response.data.message;
         } else {
-          this.error = result;
+          this.error = 'Something went wrong';
         }
       }
-    }
-  },
+    },
+  }
 }
 </script>
