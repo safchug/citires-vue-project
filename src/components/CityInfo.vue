@@ -106,6 +106,10 @@ export default {
         let result = await this.fetchCityWithId(this.$route.params.id);
       } catch (err) {
         if(err.response) {
+          if(err.response.status === 400) {
+            this.$router.push('/notfound');
+          }
+
           this.error = err.response.data.message;
         } else {
           this.error = 'Something went wrong';
