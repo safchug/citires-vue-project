@@ -6,6 +6,7 @@ import Registration from './Registration';
 import CityInfo from './CityInfo';
 import AddCityForm from './AddCityForm';
 import UpdateCityForm from './UpdateCityForm';
+import NotFound from './NotFound';
 
 Vue.use(Router);
 
@@ -35,6 +36,10 @@ export default new Router({
         {
             path: '/update/:id',
             component: UpdateCityForm
+        },
+        {
+            path: '*',
+            component: NotFound
         }
     ]
 });

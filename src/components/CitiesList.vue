@@ -74,11 +74,6 @@ export default {
     search: ''
   }),
 
-  beforeRouteUpdate (to, from, next) {
-    console.log('I was here');
-    this.error = '';
-    next()
-  },
   computed: {
     ...mapState({
       user: state => state.users.user,
@@ -115,9 +110,7 @@ export default {
         await this.fetchCities(this.search);
       } catch (err) {
         if(err.response) {
-          this.error = err.response.data.message;
-        } else {
-          this.error = 'Something went wrong';
+          this.$router.push('/notfound');
         }
       }
     }
