@@ -27,10 +27,10 @@
         <v-row>
           <strong>Mail: </strong>{{city.user.mail}}
         </v-row>
-        <v-row v-if="err">
+        <v-row v-if="error">
           <v-alert
               type="error"
-          >{{err}}</v-alert>
+          >{{ error }}</v-alert>
         </v-row>
       </v-card-text>
       <v-card-actions>
@@ -68,7 +68,7 @@ import {mapState, mapActions} from 'vuex';
 
 export default {
   data: () => ({
-    err: ''
+    error: ''
   }),
     computed: {
       ...mapState({
@@ -81,13 +81,15 @@ export default {
       async deleteCityWithId(id) {
         try {
           let result = await this.deleteCity(id);
-          if(result === 'ok') {
-            this.$router.push('/');
-          } else {
-            this.err = result;
-          }
+          if(result) this.$router.push('/');
         } catch (err) {
-          console.log(err);
+          if(err.response) {
+            this.error = err.response.data.message;
+          } else if (err.message.includes('authorized')) {
+            this.$router.push('/login');
+          } else {
+            this.error = 'Something went wrong';
+          }
         }
       },
       updateCity(id){
@@ -100,11 +102,12 @@ export default {
     async mounted() {
       try {
         let result = await this.fetchCityWithId(this.$route.params.id);
-        if(result !== 'ok') {
-          this.err = result;
-        }
       } catch (err) {
-        console.log(err);
+        if(err.response) {
+          this.error = err.response.data.message;
+        } else {
+          this.error = 'Something went wrong';
+        }
       }
     }
   }

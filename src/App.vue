@@ -50,7 +50,6 @@ export default {
   data: () => ({
     //
     drawer: true,
-    search: ''
   }),
   computed: {
     ...mapState({

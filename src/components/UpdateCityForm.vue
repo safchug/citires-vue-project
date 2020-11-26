@@ -6,7 +6,7 @@
           max-width="374"
       >
 
-        <template v-if="!err">
+        <template v-if="!error">
         <v-card-title >{{city.name}}</v-card-title>
         <v-card-text>
             <v-row>
@@ -66,7 +66,7 @@
             <v-row>
               <v-alert
                   type="error"
-              >{{err}}</v-alert>
+              >{{ error }}</v-alert>
             </v-row>
           </template>
       </v-card>
@@ -76,6 +76,7 @@
 
 <script>
 import {mapActions, mapState} from "vuex";
+import City from "@/models/City";
 
 export default {
   data: ()=> ({
@@ -84,7 +85,7 @@ export default {
     population: '',
     area: '',
     found: '',
-    err: '',
+    error: '',
     updateStus: '',
     valid: false,
     nameRules: [
@@ -117,21 +118,20 @@ export default {
       }
     },
     async updateCity(id) {
-      let data = {
-        location: this.location,
-        population: this.population,
-        area: this.area,
-        found: this.found};
-      console.log(data);
       try {
-        let result = await this.updateCityWithId({id, data});
-        if(result === 'ok') {
-          this.updateStus = 'The city has been updated';
-        } else {
-          this.err = result;
-        }
+        const city = new City(this.name, this.location,
+          this.population, this.area, this.found);
+
+        let result = await this.updateCityWithId({id, city});
+        if(result) this.updateStus = 'The city has been updated';
       } catch (err) {
-        console.log(err);
+        if(err.response) {
+          this.error = err.response.data.message;
+        } else if (err.message.includes('authorized')) {
+          this.$router.push('/login');
+        } else {
+          this.error = 'Something went wrong';
+        }
       }
     },
     comeBack(){
@@ -139,13 +139,14 @@ export default {
     }
   },
   async mounted() {
-    try{
+    try {
       let result = await this.fetchCityWithId(this.$route.params.id);
-      if(result !== 'ok') {
-        this.err = result;
-      }
     } catch (err) {
-      console.log(err);
+      if(err.response) {
+        this.error = err.response.data.message;
+      } else {
+        this.error = 'Something went wrong';
+      }
     }
   },
 

@@ -66,6 +66,7 @@
 
 <script>
 import {mapActions} from "vuex";
+import City from "@/models/City";
 
 export default {
   data: ()=> ({
@@ -103,22 +104,18 @@ export default {
       }
     },
     async add() {
-      let city ={};
-      city.name = this.name;
-      city.location =  this.location;
-      city.population = this.population;
-      city.area = this.area;
-      city.found = this.found;
-      console.log('city', city);
       try {
+        const city = new City(this.name, this.location,
+            this.population, this.area, this.found);
+        console.log('city', city);
         let result = await this.addCity(city);
-        if(result === 'ok') {
-          this.addingStatus = 'The city has been added';
-        } else  {
-          this.addingStatus = 'Something go wrong';
-        }
+        if(result) this.addingStatus = 'The city has been added';
       } catch (err) {
-        console.log(err);
+        if(err.response) {
+          this.addingStatus = err.response.data.message;
+        } else {
+          this.addingStatus = 'Something went wrong';
+        }
       }
     },
     comeBack() {

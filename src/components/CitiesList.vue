@@ -1,6 +1,6 @@
 <template >
 <v-container>
-  <v-row v-if="!err" justify="center" >
+  <v-row v-if="!error" justify="center" >
     <v-col
         cols="3"
         sm="6"
@@ -58,7 +58,7 @@
     >
       <v-alert
           type="error"
-      >{{err}}</v-alert>
+      >{{ error }}</v-alert>
     </v-col>
   </v-row>
 </v-container>
@@ -66,14 +66,19 @@
 
 <script>
 
-import {mapActions, mapGetters, mapState} from 'vuex';
-import router from '@/components/Router';
+import {mapActions, mapState} from 'vuex';
 
 export default {
   data: () => ({
-    err: '',
+    error: '',
     search: ''
   }),
+
+  beforeRouteUpdate (to, from, next) {
+    console.log('I was here');
+    this.error = '';
+    next()
+  },
   computed: {
     ...mapState({
       user: state => state.users.user,
@@ -83,43 +88,49 @@ export default {
   methods: {
     ...mapActions(['fetchCities', 'deleteCity']),
     openCityInfo(id) {
-      router.push(`/city/${id}`);
+      this.$router.push(`/city/${id}`);
     },
     async deleteCityWithId(id) {
       try {
         let result = await this.deleteCity(id);
-        if(result !== 'ok') {
-          this.err = result;
-        }
+        if(result) this.$router.push('/');
       } catch (err) {
-        console.log(err);
+        if(err.response) {
+          this.error = err.response.data.message;
+        } else if (err.message.includes('authorized')) {
+          this.$router.push('/login');
+        } else {
+          this.error = 'Something went wrong';
+        }
       }
     },
     updateCityForm(id){
-      router.push(`/update/${id}`);
+      this.$router.push(`/update/${id}`);
     },
     GoToAddCityForm(){
-      router.push('/addcity');
+      this.$router.push('/addcity');
     },
     async filterCities(){
       try {
-        let result = await this.fetchCities(this.search);
-        if(result !== 'ok') {
-          this.err = result;
-        }
+        await this.fetchCities(this.search);
       } catch (err) {
-        console.log(err);
+        if(err.response) {
+          this.error = err.response.data.message;
+        } else {
+          this.error = 'Something went wrong';
+        }
       }
     }
   },
   async mounted() {
     try {
-      let result = await this.fetchCities();
-      if(result !== 'ok') {
-        this.err = result;
-      }
+      await this.fetchCities();
     } catch (err) {
-      console.log(err);
+      if(err.response) {
+        this.error = err.response.data.message;
+      } else {
+        this.error = 'Something went wrong';
+      }
     }
   }
 }
