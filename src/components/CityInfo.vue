@@ -77,7 +77,7 @@ export default {
       })
     },
     methods: {
-      ...mapActions(['fetchCityWithId', 'deleteCity']),
+      ...mapActions(['fetchCityWithId', 'deleteCity', 'logout']),
       async deleteCityWithId(id) {
         try {
           let result = await this.deleteCity(id);
@@ -86,7 +86,8 @@ export default {
           if(err.response) {
             this.error = err.response.data.message;
           } else if (err.message.includes('authorized')) {
-            this.$router.push('/login');
+            this.logout();
+            this.error = 'You need to login';
           } else {
             this.error = 'Something went wrong';
           }
@@ -97,7 +98,8 @@ export default {
       },
       comeBack(){
         this.$router.push('/');
-      }
+      },
+
     },
     async mounted() {
       try {

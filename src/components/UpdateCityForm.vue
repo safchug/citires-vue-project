@@ -110,7 +110,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['fetchCityWithId', 'updateCityWithId']),
+    ...mapActions(['fetchCityWithId', 'updateCityWithId', 'logout']),
     submit(){
       this.$refs.form.validate();
       if(this.valid) {
@@ -128,7 +128,8 @@ export default {
         if(err.response) {
           this.error = err.response.data.message;
         } else if (err.message.includes('authorized')) {
-          this.$router.push('/login');
+          this.logout();
+          this.error = 'You need to login'
         } else {
           this.error = 'Something went wrong';
         }

@@ -81,7 +81,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['fetchCities', 'deleteCity']),
+    ...mapActions(['fetchCities', 'deleteCity', 'logout']),
     openCityInfo(id) {
       this.$router.push(`/city/${id}`);
     },
@@ -93,7 +93,7 @@ export default {
         if(err.response) {
           this.error = err.response.data.message;
         } else if (err.message.includes('authorized')) {
-          this.$router.push('/login');
+          this.logout();
         } else {
           this.error = 'Something went wrong';
         }

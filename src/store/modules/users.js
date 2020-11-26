@@ -42,6 +42,7 @@ export default {
                     if(response.status === 200){
                         ctx.commit('setUser', response.data);
                     } else {
+
                         localStorage.removeItem('accs_tkn');
                     }
                 }
@@ -52,7 +53,7 @@ export default {
         },
         logout(ctx){
             ctx.commit('setUser', null);
-            localStorage.removeItem('accs_tkn');
+            localStorage.clear();
         }
     },
     mutations:{

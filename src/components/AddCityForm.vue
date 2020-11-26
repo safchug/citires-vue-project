@@ -8,6 +8,7 @@
 
       <v-card-title>Add city</v-card-title>
       <v-card-text>
+        <template v-if="!error">
         <v-row>
           <v-text-field v-model="name"
           :rules="nameRules"
@@ -36,9 +37,17 @@
           label="Found"></v-text-field>
         </v-row>
         <template v-if="addingStatus">
-          <v-row>valid: false,
+          <v-row>
             <v-alert
             >{{addingStatus}}</v-alert>
+          </v-row>
+        </template>
+        </template>
+        <template v-else>
+          <v-row>
+            <v-alert
+                type="error"
+            >{{error}}</v-alert>
           </v-row>
         </template>
       </v-card-text>
@@ -77,6 +86,7 @@ export default {
     area: '',
     found: '',
     addingStatus: '',
+    error: '',
     nameRules: [
         v => v.trim().length > 0 || 'Name is required'
     ],
@@ -96,7 +106,7 @@ export default {
   computed: {
   },
   methods: {
-    ...mapActions(['addCity']),
+    ...mapActions(['addCity', 'logout']),
     submit(){
       this.$refs.form.validate();
       if(this.valid) {
@@ -113,8 +123,11 @@ export default {
       } catch (err) {
         if(err.response) {
           this.addingStatus = err.response.data.message;
+        } else if (err.message.includes('authorized')){
+          this.logout();
+          this.error = 'You need to login';
         } else {
-          this.addingStatus = 'Something went wrong';
+          this.error = 'Something went wrong';
         }
       }
     },
