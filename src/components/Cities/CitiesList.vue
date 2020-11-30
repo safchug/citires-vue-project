@@ -1,23 +1,4 @@
 <template >
-<v-container>
-  <v-row v-if="!error" justify="center" >
-    <v-col
-        cols="3"
-        sm="6"
-        md="8"
-    >
-      <v-btn v-if="user"
-             @click="GoToAddCityForm()"
-      >AddCity</v-btn>
-      <v-row>
-      <v-text-field v-model="search"
-                    label="Searching"
-                    hide-details="auto"
-      ></v-text-field>
-      <v-btn @click="filterCities()">
-        <v-icon dark>fas fa-search</v-icon>
-      </v-btn>
-      </v-row>
   <v-simple-table v-if="cities && cities.length > 0">
     <template v-slot:default>
       <thead>
@@ -48,23 +29,7 @@
       </tbody>
     </template>
   </v-simple-table>
-      <template v-else>
-        <v-alert type="info">Nobody added any cities yet</v-alert>
-      </template>
-    </v-col>
-  </v-row>
-  <v-row v-else justify="center" >
-    <v-col
-        cols="3"
-        sm="6"
-        md="8"
-    >
-      <v-alert
-          type="error"
-      >{{ error }}</v-alert>
-    </v-col>
-  </v-row>
-</v-container>
+  <v-alert v-else type="info">Nobody added any cities yet</v-alert>
 </template>
 
 <script>
@@ -74,7 +39,6 @@ import {mapActions, mapState} from 'vuex';
 export default {
   data: () => ({
     error: '',
-    search: ''
   }),
 
   computed: {
@@ -94,29 +58,17 @@ export default {
         if(result) this.$router.push('/');
       } catch (err) {
         if(err.response) {
-          this.error = err.response.data.message;
+          this.$emit('error', err.response.data.message);
         } else if (err.message.includes('authorized')) {
           this.logout();
         } else {
-          this.error = 'Something went wrong';
+          this.$emit('error', 'Something went wrong');
         }
       }
     },
     updateCityForm(id){
       this.$router.push(`/update/${id}`);
     },
-    GoToAddCityForm(){
-      this.$router.push('/addcity');
-    },
-    async filterCities(){
-      try {
-        await this.fetchCities(this.search);
-      } catch (err) {
-        if(err.response) {
-          this.$router.push('/notfound');
-        }
-      }
-    }
   },
   async mounted() {
     try {
@@ -125,7 +77,7 @@ export default {
       if(err.response) {
         this.error = err.response.data.message;
       } else {
-        this.error = 'Something went wrong';
+        this.$emit('error', 'Something went wrong');
       }
     }
   }

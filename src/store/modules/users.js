@@ -32,9 +32,9 @@ export default {
                 let token = localStorage.getItem('accs_tkn');
                 if(token) {
                     console.log(token);
-                    let response = await axios({
+                    let response = await axiosInstance({
                         method: 'post',
-                        url:'http://localhost:3000/api/auth',
+                        url:'/auth',
                         headers: {'Authorization': `beaber ${token}`},
                         body : {}
                     });

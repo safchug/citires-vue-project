@@ -8,27 +8,27 @@ export default new Router({
     routes: [
         {
             path: '/',
-            component: () => import('../components/CitiesList')
+            component: () => import('../components/Cities/Home')
         },
         {
             path: '/login',
-            component: () => import('../components/Login')
+            component: () => import('../components/Auth/Login')
         },
         {
             path: '/registration',
-            component: () => import('../components/Registration')
+            component: () => import('../components/Auth/Registration')
         },
         {
             path:'/city/:id',
-            component: () => import('../components/CityInfo')
+            component: () => import('../components/Cities/CityInfo')
         },
         {
             path:'/addcity',
-            component: () => import('../components/AddCityForm')
+            component: () => import('../components/Cities/AddCityForm')
         },
         {
             path: '/update/:id',
-            component: () => import('../components/UpdateCityForm')
+            component: () => import('../components/Cities/UpdateCityForm')
         },
         {
             path: '*',
