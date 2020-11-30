@@ -12,6 +12,7 @@ export default {
 
             ctx.commit('setSities', response.data);
 
+
             return response;
         },
         async fetchCityWithId(ctx, id) {

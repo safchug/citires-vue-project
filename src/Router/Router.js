@@ -1,12 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import CitiesList from '../components/CitiesList';
-import Login from '../components/Login';
-import Registration from '../components/Registration';
-import CityInfo from '../components/CityInfo';
-import AddCityForm from '../components/AddCityForm';
-import UpdateCityForm from '../components/UpdateCityForm';
-import NotFound from '../components/NotFound';
 
 Vue.use(Router);
 
@@ -15,31 +8,31 @@ export default new Router({
     routes: [
         {
             path: '/',
-            component: CitiesList
+            component: () => import('../components/CitiesList')
         },
         {
             path: '/login',
-            component: Login
+            component: () => import('../components/Login')
         },
         {
             path: '/registration',
-            component: Registration
+            component: () => import('../components/Registration')
         },
         {
             path:'/city/:id',
-            component: CityInfo
+            component: () => import('../components/CityInfo')
         },
         {
             path:'/addcity',
-            component: AddCityForm,
+            component: () => import('../components/AddCityForm')
         },
         {
             path: '/update/:id',
-            component: UpdateCityForm,
+            component: import('../components/UpdateCityForm'),
         },
         {
             path: '*',
-            component: NotFound
+            component: import('../components/NotFound')
         }
     ]
 });
