@@ -28,11 +28,11 @@ export default new Router({
         },
         {
             path: '/update/:id',
-            component: import('../components/UpdateCityForm'),
+            component: () => import('../components/UpdateCityForm')
         },
         {
             path: '*',
-            component: import('../components/NotFound')
+            component: () => import('../components/NotFound')
         }
     ]
 });

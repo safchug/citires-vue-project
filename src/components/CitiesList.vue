@@ -18,7 +18,7 @@
         <v-icon dark>fas fa-search</v-icon>
       </v-btn>
       </v-row>
-  <v-simple-table>
+  <v-simple-table v-if="cities && cities.length > 0">
     <template v-slot:default>
       <thead>
       <tr>
@@ -48,6 +48,9 @@
       </tbody>
     </template>
   </v-simple-table>
+      <template v-else>
+        <v-alert type="info">Nobody added any cities yet</v-alert>
+      </template>
     </v-col>
   </v-row>
   <v-row v-else justify="center" >
