@@ -1,19 +1,19 @@
-import axios from 'axios';
+import axiosInstance from '@/utils/AxiosInstance';
 
 export default {
     actions:{
         regist(ctx, data) {
-            return axios({
+            return axiosInstance({
                 method: 'post',
-                url: 'http://localhost:3000/api/registration',
+                url: '/registration',
                 data
             });
         },
         async login(ctx, data) {
 
-            const response = await axios({
+            const response = await axiosInstance({
                 method: 'post',
-                url: 'http://localhost:3000/api/login',
+                url: '/login',
                 data
             });
             const token = response.data.accessToken;

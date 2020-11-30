@@ -1,13 +1,13 @@
-import axios from "axios";
+import axiosInstance from '@/utils/AxiosInstance';
 
 export default {
     actions: {
         async fetchCities(ctx, query) {
             let addquery = query? `?query=${query}`: ``;
 
-            let response = await axios({
+            let response = await axiosInstance({
                 method: 'get',
-                url: `http://localhost:3000/api/cities${addquery}`
+                url: `/cities${addquery}`
             });
 
             ctx.commit('setSities', response.data);
@@ -15,9 +15,9 @@ export default {
             return response;
         },
         async fetchCityWithId(ctx, id) {
-            let response = await axios({
+            let response = await axiosInstance({
                 method: 'get',
-                url: `http://localhost:3000/api/cities/${id}`
+                url: `/cities/${id}`
             });
             if(! response.data) throw new Error('There is no data in server response');
             ctx.commit('setOneCity', response.data);
@@ -26,9 +26,9 @@ export default {
             let token = localStorage.getItem('accs_tkn');
             if(!token) throw new Error('User is not authorized');
 
-            const response = await  await axios({
+            const response = await  await axiosInstance({
                 method: 'delete',
-                url: `http://localhost:3000/api/cities/${id}`,
+                url: `cities/${id}`,
                 headers: {'Authorization': `beaber ${token}`}
             });
             ctx.commit('deleteCity', id);
@@ -37,9 +37,9 @@ export default {
         updateCityWithId(ctx, obj){
             let token = localStorage.getItem('accs_tkn');
             if(!token) throw new Error('User is not authorized');
-            return axios({
+            return axiosInstance({
                 method: 'put',
-                url: `http://localhost:3000/api/cities/${obj.id}`,
+                url: `/cities/${obj.id}`,
                 headers: {'Authorization': `beaber ${token}`},
                 data: obj.city
             });
@@ -47,9 +47,9 @@ export default {
         addCity(ctx, city) {
             let token = localStorage.getItem('accs_tkn');
             if(!token) throw new Error('User is not authorized');
-            return axios({
+            return axiosInstance({
                 method: 'post',
-                url: 'http://localhost:3000/api/cities',
+                url: '/cities',
                 headers: {'Authorization': `beaber ${token}`},
                 data: city
             });

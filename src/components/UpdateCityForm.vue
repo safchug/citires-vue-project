@@ -104,9 +104,16 @@ export default {
       v => v.trim().length > 0 || 'Found is required'
     ]
   }),
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      // access to component instance via `vm`
+      if(!vm.user) vm.error = 'Access forbiten';
+    })
+  },
   computed: {
     ...mapState({
-      city: state => state.cities.city
+      city: state => state.cities.city,
+      user: state => state.users.user
     })
   },
   methods: {

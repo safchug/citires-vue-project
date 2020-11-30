@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapState} from "vuex";
 import City from "@/models/City";
 
 export default {
@@ -103,8 +103,17 @@ export default {
        v => v.trim().length > 0 || 'Found is required'
     ]
   }),
-  computed: {
+
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      // access to component instance via `vm`
+      if(!vm.user) vm.error = 'Access forbiten';
+    })
   },
+
+  computed: mapState({
+    user: state => state.users.user
+  }),
   methods: {
     ...mapActions(['addCity', 'logout']),
     submit(){

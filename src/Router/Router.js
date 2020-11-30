@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import CitiesList from './CitiesList';
-import Login from './Login';
-import Registration from './Registration';
-import CityInfo from './CityInfo';
-import AddCityForm from './AddCityForm';
-import UpdateCityForm from './UpdateCityForm';
-import NotFound from './NotFound';
+import CitiesList from '../components/CitiesList';
+import Login from '../components/Login';
+import Registration from '../components/Registration';
+import CityInfo from '../components/CityInfo';
+import AddCityForm from '../components/AddCityForm';
+import UpdateCityForm from '../components/UpdateCityForm';
+import NotFound from '../components/NotFound';
 
 Vue.use(Router);
 
@@ -31,11 +31,11 @@ export default new Router({
         },
         {
             path:'/addcity',
-            component: AddCityForm
+            component: AddCityForm,
         },
         {
             path: '/update/:id',
-            component: UpdateCityForm
+            component: UpdateCityForm,
         },
         {
             path: '*',
