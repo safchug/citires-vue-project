@@ -3,6 +3,8 @@ import axiosInstance from '@/utils/AxiosInstance';
 export default {
     actions: {
         async fetchCities(ctx, query) {
+            ctx.commit('startLoading');
+
             let addquery = query? `?query=${query}`: ``;
 
             let response = await axiosInstance({
@@ -11,7 +13,7 @@ export default {
             });
 
             ctx.commit('setSities', response.data);
-
+            ctx.commit('stopLoading')
 
             return response;
         },
@@ -58,6 +60,12 @@ export default {
     },
 
     mutations:{
+        startLoading(state) {
+          state.loading = true;
+        },
+        stopLoading(state) {
+            state.loading = false;
+        },
         setSities(state, list){
             state.cities = list;
         },
@@ -72,6 +80,7 @@ export default {
     },
     state: {
         cities: [],
-        city: {}
+        city: {},
+        loading: false
     },
 }

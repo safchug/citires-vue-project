@@ -1,5 +1,12 @@
 <template >
-  <v-simple-table v-if="cities && cities.length > 0">
+  <v-progress-circular v-if="loading"
+                       :size="100"
+                       :width="7"
+                       color="orange"
+                       indeterminate
+  ></v-progress-circular>
+
+  <v-simple-table v-else-if="cities && cities.length > 0">
     <template v-slot:default>
       <thead>
       <tr>
@@ -44,7 +51,8 @@ export default {
   computed: {
     ...mapState({
       user: state => state.users.user,
-      cities: state => state.cities.cities
+      cities: state => state.cities.cities,
+      loading: state => state.cities.loading
     })
   },
   methods: {
@@ -75,7 +83,7 @@ export default {
       await this.fetchCities();
     } catch (err) {
       if(err.response) {
-        this.error = err.response.data.message;
+        this.$emit('error', err.response.data.message);
       } else {
         this.$emit('error', 'Something went wrong');
       }
