@@ -10,7 +10,6 @@
           <v-text-field
               v-model="mail"
               :rules="mailRules"
-              :counter="10"
               label="Mail"
               required
           ></v-text-field>

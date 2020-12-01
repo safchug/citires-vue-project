@@ -20,7 +20,7 @@
           <v-text-field
               v-model="firstname"
               :rules="nameRules"
-              :counter="10"
+              :counter="20"
               label="First name"
               required
           ></v-text-field>
@@ -34,7 +34,7 @@
           <v-text-field
               v-model="lastname"
               :rules="nameRules"
-              :counter="10"
+              :counter="20"
               label="Last name"
               required
           ></v-text-field>
@@ -132,7 +132,7 @@ export default {
     nameRules: [
       v => !!v || 'Name is required',
       v => v.trim().length > 0 || 'Name must be valid',
-      v => v.length <= 10 || 'Name must be less than 10 characters',
+      v => v.length <= 20 || 'Name must be less than 20 characters',
     ],
     emailRules: [
       v => !!v || 'E-mail is required',
