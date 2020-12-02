@@ -4,18 +4,22 @@ export default {
     actions: {
         async fetchCities(ctx, query) {
             ctx.commit('startLoading');
+            try {
+                let addquery = query? `?query=${query}`: ``;
 
-            let addquery = query? `?query=${query}`: ``;
+                let response = await axiosInstance({
+                    method: 'get',
+                    url: `/cities${addquery}`
+                });
 
-            let response = await axiosInstance({
-                method: 'get',
-                url: `/cities${addquery}`
-            });
+                ctx.commit('setSities', response.data);
+                ctx.commit('stopLoading');
 
-            ctx.commit('setSities', response.data);
-            ctx.commit('stopLoading')
-
-            return response;
+                return response;
+            } catch (e) {
+                ctx.commit('stopLoading');
+                throw e;
+            }
         },
         async fetchCityWithId(ctx, id) {
             let response = await axiosInstance({
