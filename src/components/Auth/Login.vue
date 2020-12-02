@@ -10,7 +10,7 @@
           <v-text-field
               v-model="mail"
               :rules="mailRules"
-              label="Mail"
+              :label="$t('loginForm.mail')"
               required
           ></v-text-field>
         </v-col>
@@ -24,7 +24,7 @@
               v-model="password"
               :type="inputType"
               :rules="passwordRules"
-              label="Password"
+              :label="$t('loginForm.password')"
               required
           ></v-text-field>
         </v-col>
@@ -37,7 +37,7 @@
         </v-row>
       </template>
       <v-row>
-        <v-btn type="submit" color="secondary">Log in</v-btn>
+        <v-btn type="submit" color="secondary">{{$t('loginForm.login')}}</v-btn>
       </v-row>
     </v-container>
   </v-form>
@@ -53,16 +53,23 @@ export default {
     mail: '',
     password: '',
     inputType: 'password',
-    error: '',
-    mailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+/.test(v) || 'E-mail must be valid',
-    ],
-    passwordRules: [
-      v => !!v || 'Password is required',
-      v => v.trim().length >= 6 || 'Password must be valid',
-    ]
+    error: ''
   }),
+
+  computed: {
+    mailRules() {
+      return [
+          v => !!v || this.$t('loginForm.mailRequired'),
+          v => /.+@.+/.test(v) || this.$t('loginForm.mailMustBeValid')];
+    },
+    passwordRules() {
+      return [
+        v => !!v || this.$t('loginForm.passwordRequired'),
+        v => v.trim().length >= 6 || this.$t('loginForm.passwordMustBeValid'),
+      ];
+    }
+  },
+
   methods: {
     ...mapActions(['login']),
     submit() {

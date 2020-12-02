@@ -1,0 +1,35 @@
+{
+  "menu": {
+    "login": "Log in",
+    "register": "Sign in",
+    "logout": "Log out"
+  },
+  "loginForm": {
+    "login": "Log in",
+    "mail": "Mail",
+    "password": "Password",
+    "mailRequired": "E-mail is required",
+    "mailMustBeValid": "E-mail must be valid",
+    "passwordRequired": "Password is required",
+    "passwordMustBeValid": "Password must consist more than 6 chars"
+  },
+  "registration" : {
+    "register": "Register",
+    "firstname": "First name",
+    "lastname": "Last name",
+    "birthday": "Birthday",
+    "mail": "Mail",
+    "password": "Password",
+    "repeatPassword": "Repeat password",
+    "nameRequired": "Name is required",
+    "nameMustBeValid": "Name must be valid",
+    "nameMustBeLess": "Name must be less than 20 characters",
+    "mailRequired": "E-mail is required",
+    "mailMustBeValid": "E-mail must be valid",
+    "birthdayRequired": "Birthday is required",
+    "passwordRequired": "Password is required",
+    "passwordMustBeMore": "Password must be more than 6 characters",
+    "repeatPaswordRequired": "To repeat pasword is required",
+    "passwordsDontMatch": "Passwords dont match"
+  }
+}

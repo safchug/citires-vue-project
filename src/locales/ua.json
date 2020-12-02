@@ -1,0 +1,35 @@
+{
+  "menu": {
+    "login": "Увійти",
+    "register": "Зареєструватися",
+    "logout": "Вийти"
+  },
+  "loginForm": {
+    "login": "Увійти",
+    "mail": "Емейл",
+    "password": "Пароль",
+    "mailRequired": "Потрібно ввести Емейл",
+    "mailMustBeValid": "Емейл має бути валідним",
+    "passwordRequired": "Пароль обов'язковий",
+    "passwordMustBeValid": "Пароль має складатися більше ніж з 6 символів"
+  },
+  "registration" : {
+    "register": "Зареєструвати",
+    "firstname": "Ім'я",
+    "lastname": "Прізвище",
+    "birthday": "День народження",
+    "mail": "Емейл",
+    "password": "Пароль",
+    "repeatPassword": "Повтoріть пароль",
+    "nameRequired": "Поле ім'я обов'язкове",
+    "nameMustBeValid": "І'я повинно бути валідним",
+    "nameMustBeLess": "Ім'я не може перевищувати 20 символів",
+    "mailRequired": "Емейл обов'язковий",
+    "mailMustBeValid": "Емейл повинний бути валідним",
+    "birthdayRequired": "День народження обо'язкове поле",
+    "passwordRequired": "Пароль обов'язковий",
+    "passwordMustBeMore": "Пароль має містити більше ніж 6 символів",
+    "repeatPaswordRequired": "Повторити пароль обов'язково",
+    "passwordsDontMatch": "Паролі не збігаються"
+  }
+}

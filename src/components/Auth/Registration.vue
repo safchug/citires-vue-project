@@ -21,7 +21,7 @@
               v-model="firstname"
               :rules="nameRules"
               :counter="20"
-              label="First name"
+              :label="$t('registration.firstname')"
               required
           ></v-text-field>
         </v-col>
@@ -35,7 +35,7 @@
               v-model="lastname"
               :rules="nameRules"
               :counter="20"
-              label="Last name"
+              :label="$t('registration.lastname')"
               required
           ></v-text-field>
         </v-col>
@@ -49,7 +49,7 @@
               v-model="birthday"
               :counter="10"
               :rules="birthdayRules"
-              label="Birthday"
+              :label="$t('registration.birthday')"
               required
           ></v-text-field>
         </v-col>
@@ -62,7 +62,7 @@
           <v-text-field
               v-model="mail"
               :rules="emailRules"
-              label="E-mail"
+              :label="$t('registration.mail')"
               required
           ></v-text-field>
         </v-col>
@@ -76,7 +76,7 @@
               v-model="password"
               :type="inputType"
               :rules="passwordRules"
-              label="Password"
+              :label="$t('registration.password')"
               required
           ></v-text-field>
         </v-col>
@@ -90,7 +90,7 @@
               v-model="passwordRepition"
               :type="inputType"
               :rules="repeatPasswordRules"
-              label="Repeat password"
+              :label="$t('registration.repeatPassword')"
               required
           ></v-text-field>
         </v-col>
@@ -103,7 +103,7 @@
         </v-row>
       </template>
         <v-row>
-        <v-btn type="submit" color="secondary">Rigister</v-btn>
+        <v-btn type="submit" color="secondary">{{$t('registration.register')}}</v-btn>
       </v-row>
 
     </v-container>
@@ -129,35 +129,41 @@ export default {
     passwordRepition: '',
     inputType: 'password',
 
-    nameRules: [
-      v => !!v || 'Name is required',
-      v => v.trim().length > 0 || 'Name must be valid',
-      v => v.length <= 20 || 'Name must be less than 20 characters',
-    ],
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+/.test(v) || 'E-mail must be valid'
-    ],
-    passwordRules: [
-      v => !!v || 'Password is required',
-      v => v.length >= 6 || 'Passwword must be more than 6 characters'
-    ],
-    birthdayRules: [
-      v => !!v || 'Birthday is required',
-    ],
   }),
   computed: {
+    nameRules() {
+      return [
+        v => !!v || this.$t('registration.nameRequired'),
+        v => v.trim().length > 0 || this.$t('registration.nameMustBeValid'),
+        v => v.length <= 20 || this.$t('registration.nameMustBeLess'),
+      ]
+    },
+
+    emailRules() {
+      return [
+        v => !!v || this.$t('registration.mailRequired'),
+        v => /.+@.+/.test(v) || this.$t('registration.mailMustBeValid')
+      ]
+    },
+
+    birthdayRules() {
+      return [
+        v => !!v || this.$t('registration.birthdayRequired'),
+      ]
+    },
+
+    passwordRules() {
+      return [
+        v => !!v || this.$t('registration.passwordRequired'),
+        v => v.length >= 6 || this.$t('registration.passwordMustBeMore')
+      ]
+    },
+
     repeatPasswordRules() {
-      let rules = [];
-
-      const passReq = v => !!v || 'To repeat pasword is required';
-      rules.push(passReq);
-
-      if(this.password && this.passwordRepition) {
-        const rule = v => this.password === this.passwordRepition || 'Passwords dont match';
-        rules.push(rule);
-      }
-      return rules;
+      return [
+        v => !!v || this.$t('registration.repeatPaswordRequired'),
+        v => this.password === this.passwordRepition || this.$t('registration.passwordsDontMatch')
+      ];
     }
   },
   methods: {

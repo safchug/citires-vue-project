@@ -15,17 +15,18 @@
           {{user.name}}
         </v-row>
         <v-btn text @click="logout()">
-          Log out
+          {{$t('menu.logout')}}
         </v-btn>
       </template>
       <template v-else>
         <v-btn text to="/login">
-          Log in
+          {{$t('menu.login')}}
         </v-btn>
         <v-btn text to="/registration">
-          Sign in
+          {{$t('menu.register')}}
         </v-btn>
       </template>
+      <lang-menu></lang-menu>
       </v-app-bar>
 
 
@@ -41,9 +42,13 @@
 
 <script>
 import {mapActions, mapState} from 'vuex';
+import LanguageMenu from "@/components/LanguageMenu";
 
 export default {
   name: 'App',
+  components: {
+    'lang-menu': LanguageMenu
+  },
   comments: {
 
   },
