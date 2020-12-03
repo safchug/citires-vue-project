@@ -6,35 +6,35 @@
         max-width="374"
     >
 
-      <v-card-title>Add city</v-card-title>
+      <v-card-title>{{$t('addCity.title')}}</v-card-title>
       <v-card-text>
         <template v-if="!error">
         <v-row>
           <v-text-field v-model="name"
           :rules="nameRules"
-          label="Name">
+          :label="$t('addCity.name')">
           </v-text-field>
         </v-row>
         <v-row>
           <v-text-field v-model="location"
-          :rules="locationRules" label="Location"
+          :rules="locationRules" :label="$t('addCity.location')"
           ></v-text-field>
         </v-row>
         <v-row>
           <v-text-field v-model="population"
-          :rules="populationRules" label="Population"
+          :rules="populationRules" :label="$t('addCity.population')"
           ></v-text-field>
         </v-row>
         <v-row>
           <v-text-field v-model="area"
           :rules="areaRules"
-                        label="Area"
+                        :label="$t('addCity.area')"
           ></v-text-field>
         </v-row>
         <v-row>
           <v-text-field v-model="found"
-          :rules="foundRules"
-          label="Found"></v-text-field>
+                        :rules="foundRules"
+                        :label="$t('addCity.found')"></v-text-field>
         </v-row>
         <template v-if="addingStatus">
           <v-row>
@@ -57,14 +57,14 @@
             text
             type="submit"
         >
-          Add
+          {{$t('addCity.add')}}
         </v-btn>
         <v-btn
             color="orange"
             text
             @click="comeBack()"
         >
-          Come back
+          {{$t('addCity.comeBack')}}
         </v-btn>
 
       </v-card-actions>
@@ -87,33 +87,35 @@ export default {
     found: '',
     addingStatus: '',
     error: '',
-    nameRules: [
-        v => v.trim().length > 0 || 'Name is required'
-    ],
-    locationRules: [
-      v => v.trim().length > 0 || 'Location is required'
-    ],
-    populationRules: [
-      v => v.trim().length > 0 || 'Population is required'
-    ],
-    areaRules: [
-      v => v.trim().length > 0 || 'Area is required'
-    ],
-    foundRules: [
-       v => v.trim().length > 0 || 'Found is required'
-    ]
   }),
 
   beforeRouteEnter (to, from, next) {
     next(vm => {
       // access to component instance via `vm`
-      if(!vm.user) vm.error = 'Access forbiten';
+      if(!vm.user) vm.error = vm.$t('messages.accessForbiten');
     })
   },
 
-  computed: mapState({
-    user: state => state.users.user
-  }),
+  computed: {
+    ...mapState({
+      user: state => state.users.user
+    }),
+    nameRules() {
+      return [ v => v.trim().length > 0 || this.$t('addCity.nameRequired')]
+    },
+    locationRules() {
+      return [ v => v.trim().length > 0 || this.$t('addCity.locationRequired')];
+    },
+    populationRules() {
+      return [ v => v.trim().length > 0 || this.$t('addCity.populationRequiured')];
+    },
+    areaRules() {
+      return [ v => v.trim().length > 0 || this.$t('addCity.areaRequired')];
+    },
+    foundRules() {
+      return [v => v.trim().length > 0 || this.$t('addCity.foundReuired')]
+    }
+  },
   methods: {
     ...mapActions(['addCity', 'logout']),
     submit(){
@@ -128,15 +130,15 @@ export default {
             this.population, this.area, this.found);
         console.log('city', city);
         let result = await this.addCity(city);
-        if(result) this.addingStatus = 'The city has been added';
+        if(result) this.addingStatus = this.$t('messages.theCityAdded');
       } catch (err) {
         if(err.response) {
           this.addingStatus = err.response.data.message;
         } else if (err.message.includes('authorized')){
           this.logout();
-          this.error = 'You need to login';
+          this.error = this.$t('messages.youNeedToLogIn');
         } else {
-          this.error = 'Something went wrong';
+          this.error = this.$t('messages.somethingWentWrong');
         }
       }
     },

@@ -11,10 +11,10 @@
       <thead>
       <tr>
         <th class="text-left">
-          City
+          {{$t('home.citiesList.city')}}
         </th>
         <th class="text-left">
-          Population
+          {{$t('home.citiesList.population')}}
         </th>
         <th></th>
       </tr>
@@ -26,12 +26,11 @@
       >
         <td>{{ city.name }}</td>
         <td>{{ city.population }}</td>
-        <td width="285"><v-btn @click="openCityInfo(city.id)">info</v-btn>
+        <td><v-btn @click="openCityInfo(city.id)">{{$t('home.citiesList.info')}}</v-btn></td>
           <template v-if="user && user.id === city.userId">
-            <v-btn @click="updateCityForm(city.id)">Update</v-btn>
-            <v-btn @click="deleteCityWithId(city.id)">Delete</v-btn>
+            <td><v-btn @click="updateCityForm(city.id)">{{$t('home.citiesList.update')}}</v-btn></td>
+            <td><v-btn @click="deleteCityWithId(city.id)">{{$t('home.citiesList.delete')}}</v-btn></td>
           </template>
-        </td>
       </tr>
       </tbody>
     </template>
@@ -70,7 +69,7 @@ export default {
         } else if (err.message.includes('authorized')) {
           this.logout();
         } else {
-          this.$emit('error', 'Something went wrong');
+          this.$emit('error', this.$t('messages.somethingWentWrong'));
         }
       }
     },
@@ -85,7 +84,7 @@ export default {
       if(err.response) {
         this.$emit('error', err.response.data.message);
       } else {
-        this.$emit('error', 'Something went wrong');
+        this.$emit('error', this.$t('messages.somethingWentWrong'));
       }
     }
   }

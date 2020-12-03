@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-text-field v-model="search"
-                  label="Searching"
+                  :label="$t('home.search')"
                   hide-details="auto"
     ></v-text-field>
     <v-btn @click="filterCities">

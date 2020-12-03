@@ -182,11 +182,9 @@ export default {
         if(result) this.isRegistered = true;
       } catch (err) {
         if(err.response) {
-          if(err.response.status === 409) {
-            this.error = err.response.data.message;
-          }
+          this.error = err.response.data.message;
         } else {
-          this.error = 'Something went wrong';
+          this.error = this.$t('messages.somethingWentWrong');
         }
       }
     }

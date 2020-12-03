@@ -7,7 +7,7 @@
     >
 
       <v-btn text light to="/">
-        CitiesService
+        {{$t('logo')}}
       </v-btn>
         <v-spacer></v-spacer>
       <template v-if="user">

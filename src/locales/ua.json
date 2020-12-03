@@ -1,4 +1,5 @@
 {
+  "logo": "Сервіс Міст",
   "menu": {
     "login": "Увійти",
     "register": "Зареєструватися",
@@ -31,5 +32,69 @@
     "passwordMustBeMore": "Пароль має містити більше ніж 6 символів",
     "repeatPaswordRequired": "Повторити пароль обов'язково",
     "passwordsDontMatch": "Паролі не збігаються"
+  },
+  "home": {
+    "addCity": "Додати місто",
+    "search": "Пошук",
+    "citiesList": {
+      "city": "Місто",
+      "population": "Населення",
+      "info": "Інформація",
+      "update": "Обновити",
+      "delete": "Видалити"
+    }
+  },
+  "cityInfo": {
+    "location": "Розташування",
+    "population": "Населення",
+    "area": "Площа",
+    "found": "Засновано",
+    "createdBy": "Створено",
+    "name": "Ім'я",
+    "mail": "Емейл",
+    "update": "Обновити",
+    "delete": "Видалити",
+    "comeback": "Повернутися"
+  },
+  "addCity": {
+    "title": "Додати місто",
+    "name": "Назва",
+    "location": "Розташування",
+    "population": "Населення",
+    "area": "Площа",
+    "found": "Засновано",
+    "add": "Додати",
+    "comeBack": "Повернутися",
+    "nameRequired": "Назва обов'язкова",
+    "locationRequired": "Розсташування обов'язкове",
+    "populationRequiured": "Населення обов'язкове",
+    "areaRequired": "Площа обо'язкове поле",
+    "foundReuired": "Поле заснованго обов'язкове"
+  },
+  "updateCity": {
+    "title": "Додати місто",
+    "name": "Назва",
+    "location": "Розташування",
+    "population": "Населення",
+    "area": "Площа",
+    "found": "Засновано",
+    "update": "Обновити",
+    "comeBack": "Повернутися",
+    "nameRequired": "Назва обов'язкова",
+    "locationRequired": "Розсташування обов'язкове",
+    "populationRequiured": "Населення обов'язкове",
+    "areaRequired": "Площа обо'язкове поле",
+    "foundReuired": "Поле заснованго обов'язкове"
+  },
+  "notFound": {
+    "title": "Не знайдено",
+    "home": "Домівка"
+  },
+  "messages": {
+    "somethingWentWrong": "Щось пішло не так",
+    "accessForbiten": "Дорступ заборонено",
+    "youNeedToLogIn": "Вам потрібно увійти на сайт",
+    "theCityAdded": "Місто додано",
+    "theCityUpdated": "Інформацію про місто обновлено"
   }
 }

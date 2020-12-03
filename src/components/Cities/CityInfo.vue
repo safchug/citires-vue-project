@@ -7,25 +7,25 @@
       <v-card-title >{{city.name}}</v-card-title>
       <v-card-text>
         <v-row>
-          <strong>Location: </strong>{{city.location}}
+          <strong>{{$t('cityInfo.location')}}: </strong>{{city.location}}
         </v-row>
         <v-row>
-          <strong>Population: </strong>{{city.population}}
+          <strong>{{$t('cityInfo.population')}}: </strong>{{city.population}}
         </v-row>
         <v-row>
-          <strong>Area: </strong>{{city.area}}
+          <strong>{{$t('cityInfo.area')}}: </strong>{{city.area}}
         </v-row>
         <v-row>
-          <strong>Found: </strong>{{city.found}}
+          <strong>{{$t('cityInfo.found')}}: </strong>{{city.found}}
         </v-row>
         <v-row>
-          <strong>Created by: </strong>
+          <strong>{{$t('cityInfo.createdBy')}}: </strong>
         </v-row>
         <v-row>
-          <strong>Name: </strong>{{city.user.name}}
+          <strong>{{$t('cityInfo.name')}}: </strong>{{city.user.name}}
         </v-row>
         <v-row>
-          <strong>Mail: </strong>{{city.user.mail}}
+          <strong>{{$t('cityInfo.mail')}}: </strong>{{city.user.mail}}
         </v-row>
         <v-row v-if="error">
           <v-alert
@@ -40,7 +40,7 @@
             text
             @click="updateCity(city.id)"
         >
-          Update
+          {{$t('cityInfo.update')}}
         </v-btn>
 
         <v-btn
@@ -48,7 +48,7 @@
             text
             @click="deleteCityWithId(city.id)"
         >
-          Delete
+          {{$t('cityInfo.delete')}}
         </v-btn>
         </template>
         <v-btn
@@ -56,7 +56,7 @@
             text
             @click="comeBack()"
         >
-          Come back
+          {{$t('cityInfo.comeback')}}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -87,9 +87,9 @@ export default {
             this.error = err.response.data.message;
           } else if (err.message.includes('authorized')) {
             this.logout();
-            this.error = 'You need to login';
+            this.error = this.$t('messages.youNeedToLogIn');
           } else {
-            this.error = 'Something went wrong';
+            this.error = this.$t('messages.somethingWentWrong');
           }
         }
       },
@@ -112,7 +112,7 @@ export default {
 
           this.error = err.response.data.message;
         } else {
-          this.error = 'Something went wrong';
+          this.error = this.$t('messages.somethingWentWrong');
         }
       }
     }

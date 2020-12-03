@@ -1,4 +1,5 @@
 {
+  "logo": "Cities Service",
   "menu": {
     "login": "Log in",
     "register": "Sign in",
@@ -31,5 +32,69 @@
     "passwordMustBeMore": "Password must be more than 6 characters",
     "repeatPaswordRequired": "To repeat pasword is required",
     "passwordsDontMatch": "Passwords dont match"
+  },
+  "home": {
+    "addCity": "Add city",
+    "search": "Searching",
+    "citiesList": {
+      "city": "City",
+      "population": "Population",
+      "info": "Info",
+      "update": "Update",
+      "delete": "Delete"
+    }
+  },
+  "cityInfo": {
+    "location": "Location",
+    "population": "Population",
+    "area": "Area",
+    "found": "Found",
+    "createdBy": "Created by",
+    "name": "Name",
+    "mail": "Mail",
+    "update": "Update",
+    "delete": "Delete",
+    "comeback": "Come back"
+  },
+  "addCity": {
+    "title": "Add City",
+    "name": "Name",
+    "location": "Location",
+    "population": "Population",
+    "area": "Area",
+    "found": "Found",
+    "add": "Add",
+    "comeBack": "Come back",
+    "nameRequired": "Name is required",
+    "locationRequired": "Location is required",
+    "populationRequiured": "Population is required",
+    "areaRequired": "Area is required",
+    "foundReuired": "Found is required"
+  },
+  "updateCity": {
+    "title": "Add City",
+    "name": "Name",
+    "location": "Location",
+    "population": "Population",
+    "area": "Area",
+    "found": "Found",
+    "update": "Update",
+    "comeBack": "Come back",
+    "nameRequired": "Name is required",
+    "locationRequired": "Location is required",
+    "populationRequiured": "Population is required",
+    "areaRequired": "Area is required",
+    "foundReuired": "Found is required"
+  },
+  "notFound": {
+    "title": "Not Found",
+    "home": "Home"
+  },
+  "messages": {
+    "somethingWentWrong": "Something went wrong",
+    "accessForbiten": "Access forbiten",
+    "youNeedToLogIn": "You need to log in",
+    "theCityAdded": "The city has been added",
+    "theCityUpdated": "The city has been updated"
   }
 }

@@ -6,7 +6,7 @@
           sm="6"
           md="8"
       >
-        <v-btn v-if="user" @click="GoToAddCityForm()">AddCity</v-btn>
+        <v-btn v-if="user" @click="GoToAddCityForm()">{{$t('home.addCity')}}</v-btn>
         <city-serch></city-serch>
         <city-list @error="setError"></city-list>
       </v-col>

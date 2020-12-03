@@ -12,29 +12,29 @@
             <v-row>
               <v-text-field v-model="name"
                             :rules="nameRules"
-                            label="Name">
+                            :label="$t('updateCity.name')">
               </v-text-field>
             </v-row>
             <v-row>
               <v-text-field v-model="location"
-                            :rules="locationRules" label="Location"
+                            :rules="locationRules" :label="$t('updateCity.location')"
               ></v-text-field>
             </v-row>
             <v-row>
               <v-text-field v-model="population"
-                            :rules="populationRules" label="Population"
+                            :rules="populationRules" :label="$t('updateCity.population')"
               ></v-text-field>
             </v-row>
             <v-row>
               <v-text-field v-model="area"
                             :rules="areaRules"
-                            label="Area"
+                            :label="$t('updateCity.area')"
               ></v-text-field>
             </v-row>
             <v-row>
               <v-text-field v-model="found"
                             :rules="foundRules"
-                            label="Found"></v-text-field>
+                            :label="$t('updateCity.found')"></v-text-field>
             </v-row>
           <template v-if="updateStus">
             <v-row>
@@ -49,7 +49,7 @@
               color="orange"
               text
           >
-            Update
+            {{$t('updateCity.update')}}
           </v-btn>
 
           <v-btn
@@ -57,7 +57,7 @@
               text
               @click="comeBack()"
           >
-            Come back
+            {{$t('updateCity.comeBack')}}
           </v-btn>
 
         </v-card-actions>
@@ -87,34 +87,34 @@ export default {
     found: '',
     error: '',
     updateStus: '',
-    valid: false,
-    nameRules: [
-      v => v.trim().length > 0 || 'Name is required'
-    ],
-    locationRules: [
-      v => v.trim().length > 0 || 'Location is required'
-    ],
-    populationRules: [
-      v => v.trim().length > 0 || 'Population is required'
-    ],
-    areaRules: [
-      v => v.trim().length > 0 || 'Area is required'
-    ],
-    foundRules: [
-      v => v.trim().length > 0 || 'Found is required'
-    ]
+    valid: false
   }),
   beforeRouteEnter (to, from, next) {
     next(vm => {
       // access to component instance via `vm`
-      if(!vm.user) vm.error = 'Access forbiten';
+      if(!vm.user) vm.error = vm.$t('messages.accessForbiten');
     })
   },
   computed: {
     ...mapState({
       city: state => state.cities.city,
       user: state => state.users.user
-    })
+    }),
+    nameRules() {
+      return [ v => v.trim().length > 0 || this.$t('updateCity.nameRequired')]
+    },
+    locationRules() {
+      return [ v => v.trim().length > 0 || this.$t('updateCity.locationRequired')];
+    },
+    populationRules() {
+      return [ v => v.trim().length > 0 || this.$t('updateCity.populationRequiured')];
+    },
+    areaRules() {
+      return [ v => v.trim().length > 0 || this.$t('updateCity.areaRequired')];
+    },
+    foundRules() {
+      return [v => v.trim().length > 0 || this.$t('updateCity.foundReuired')]
+    }
   },
   methods: {
     ...mapActions(['fetchCityWithId', 'updateCityWithId', 'logout']),
@@ -130,15 +130,15 @@ export default {
           this.population, this.area, this.found);
 
         let result = await this.updateCityWithId({id, city});
-        if(result) this.updateStus = 'The city has been updated';
+        if(result) this.updateStus = this.$t('messages.theCityUpdated');
       } catch (err) {
         if(err.response) {
           this.error = err.response.data.message;
         } else if (err.message.includes('authorized')) {
           this.logout();
-          this.error = 'You need to login'
+          this.error = this.$t('messages.youNeedToLogIn');
         } else {
-          this.error = 'Something went wrong';
+          this.error = this.$t('messages.somethingWentWrong');
         }
       }
     },
@@ -153,7 +153,7 @@ export default {
       if(err.response) {
         this.error = err.response.data.message;
       } else {
-        this.error = 'Something went wrong';
+        this.error = this.$t('messages.somethingWentWrong');
       }
     }
   },
