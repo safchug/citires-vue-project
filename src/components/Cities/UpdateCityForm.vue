@@ -75,11 +75,11 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
-import City from "@/models/City";
+import { mapActions, mapState } from 'vuex';
+import City from '@/models/City';
 
 export default {
-  data: ()=> ({
+  data: () => ({
     name: '',
     location: '',
     population: '',
@@ -87,40 +87,40 @@ export default {
     found: '',
     error: '',
     updateStus: '',
-    valid: false
+    valid: false,
   }),
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
       // access to component instance via `vm`
-      if(!vm.user) vm.error = vm.$t('messages.accessForbiten');
-    })
+      if (!vm.user) vm.error = vm.$t('messages.accessForbiten');
+    });
   },
   computed: {
     ...mapState({
-      city: state => state.cities.city,
-      user: state => state.users.user
+      city: (state) => state.cities.city,
+      user: (state) => state.users.user,
     }),
     nameRules() {
-      return [ v => v.trim().length > 0 || this.$t('updateCity.nameRequired')]
+      return [(v) => v.trim().length > 0 || this.$t('updateCity.nameRequired')];
     },
     locationRules() {
-      return [ v => v.trim().length > 0 || this.$t('updateCity.locationRequired')];
+      return [(v) => v.trim().length > 0 || this.$t('updateCity.locationRequired')];
     },
     populationRules() {
-      return [ v => v.trim().length > 0 || this.$t('updateCity.populationRequiured')];
+      return [(v) => v.trim().length > 0 || this.$t('updateCity.populationRequiured')];
     },
     areaRules() {
-      return [ v => v.trim().length > 0 || this.$t('updateCity.areaRequired')];
+      return [(v) => v.trim().length > 0 || this.$t('updateCity.areaRequired')];
     },
     foundRules() {
-      return [v => v.trim().length > 0 || this.$t('updateCity.foundReuired')]
-    }
+      return [(v) => v.trim().length > 0 || this.$t('updateCity.foundReuired')];
+    },
   },
   methods: {
     ...mapActions(['fetchCityWithId', 'updateCityWithId', 'logout']),
-    submit(){
+    submit() {
       this.$refs.form.validate();
-      if(this.valid) {
+      if (this.valid) {
         this.updateCity(this.city.id);
       }
     },
@@ -129,10 +129,10 @@ export default {
         const city = new City(this.name, this.location,
           this.population, this.area, this.found);
 
-        let result = await this.updateCityWithId({id, city});
-        if(result) this.updateStus = this.$t('messages.theCityUpdated');
+        const result = await this.updateCityWithId({ id, city });
+        if (result) this.updateStus = this.$t('messages.theCityUpdated');
       } catch (err) {
-        if(err.response) {
+        if (err.response) {
           this.error = err.response.data.message;
         } else if (err.message.includes('authorized')) {
           this.logout();
@@ -142,15 +142,15 @@ export default {
         }
       }
     },
-    comeBack(){
+    comeBack() {
       this.$router.push('/');
-    }
+    },
   },
   async mounted() {
     try {
-      let result = await this.fetchCityWithId(this.$route.params.id);
+      await this.fetchCityWithId(this.$route.params.id);
     } catch (err) {
-      if(err.response) {
+      if (err.response) {
         this.error = err.response.data.message;
       } else {
         this.error = this.$t('messages.somethingWentWrong');
@@ -159,13 +159,13 @@ export default {
   },
 
   watch: {
-    city: function () {
+    city() {
       this.name = this.city.name;
       this.location = this.city.location;
       this.population = this.city.population;
       this.area = this.city.area;
       this.found = this.city.found;
-    }
-  }
-}
+    },
+  },
+};
 </script>

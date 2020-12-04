@@ -29,7 +29,6 @@
       <lang-menu></lang-menu>
       </v-app-bar>
 
-
     <v-main>
       <v-container fluid>
 
@@ -41,13 +40,13 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex';
-import LanguageMenu from "@/components/LanguageMenu";
+import { mapActions, mapState } from 'vuex';
+import LanguageMenu from '@/components/LanguageMenu.vue';
 
 export default {
   name: 'App',
   components: {
-    'lang-menu': LanguageMenu
+    'lang-menu': LanguageMenu,
   },
   comments: {
 
@@ -58,14 +57,14 @@ export default {
   }),
   computed: {
     ...mapState({
-      user: state => state.users.user
+      user: (state) => state.users.user,
     }),
   },
   methods: {
-    ...mapActions(['auth', 'logout'])
+    ...mapActions(['auth', 'logout']),
   },
   mounted() {
     this.auth();
-  }
+  },
 };
 </script>

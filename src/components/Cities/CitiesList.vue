@@ -26,10 +26,22 @@
       >
         <td>{{ city.name }}</td>
         <td>{{ city.population }}</td>
-        <td><v-btn @click="openCityInfo(city.id)">{{$t('home.citiesList.info')}}</v-btn></td>
+        <td>
+          <v-btn @click="openCityInfo(city.id)">
+            {{$t('home.citiesList.info')}}
+          </v-btn>
+        </td>
           <template v-if="user && user.id === city.userId">
-            <td><v-btn @click="updateCityForm(city.id)">{{$t('home.citiesList.update')}}</v-btn></td>
-            <td><v-btn @click="deleteCityWithId(city.id)">{{$t('home.citiesList.delete')}}</v-btn></td>
+            <td>
+              <v-btn @click="updateCityForm(city.id)">
+                {{$t('home.citiesList.update')}}
+              </v-btn>
+            </td>
+            <td>
+              <v-btn @click="deleteCityWithId(city.id)">
+                {{$t('home.citiesList.delete')}}
+              </v-btn>
+            </td>
           </template>
       </tr>
       </tbody>
@@ -40,7 +52,7 @@
 
 <script>
 
-import {mapActions, mapState} from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   data: () => ({
@@ -49,10 +61,10 @@ export default {
 
   computed: {
     ...mapState({
-      user: state => state.users.user,
-      cities: state => state.cities.cities,
-      loading: state => state.cities.loading
-    })
+      user: (state) => state.users.user,
+      cities: (state) => state.cities.cities,
+      loading: (state) => state.cities.loading,
+    }),
   },
   methods: {
     ...mapActions(['fetchCities', 'deleteCity', 'logout']),
@@ -61,10 +73,10 @@ export default {
     },
     async deleteCityWithId(id) {
       try {
-        let result = await this.deleteCity(id);
-        if(result) this.$router.push('/');
+        const result = await this.deleteCity(id);
+        if (result) this.$router.push('/');
       } catch (err) {
-        if(err.response) {
+        if (err.response) {
           this.$emit('error', err.response.data.message);
         } else if (err.message.includes('authorized')) {
           this.logout();
@@ -73,7 +85,7 @@ export default {
         }
       }
     },
-    updateCityForm(id){
+    updateCityForm(id) {
       this.$router.push(`/update/${id}`);
     },
   },
@@ -81,12 +93,12 @@ export default {
     try {
       await this.fetchCities();
     } catch (err) {
-      if(err.response) {
+      if (err.response) {
         this.$emit('error', err.response.data.message);
       } else {
         this.$emit('error', this.$t('messages.somethingWentWrong'));
       }
     }
-  }
-}
+  },
+};
 </script>

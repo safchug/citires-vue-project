@@ -64,57 +64,57 @@
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   data: () => ({
-    error: ''
+    error: '',
   }),
-    computed: {
-      ...mapState({
-        user: state => state.users.user,
-        city: state => state.cities.city
-      })
-    },
-    methods: {
-      ...mapActions(['fetchCityWithId', 'deleteCity', 'logout']),
-      async deleteCityWithId(id) {
-        try {
-          let result = await this.deleteCity(id);
-          if(result) this.$router.push('/');
-        } catch (err) {
-          if(err.response) {
-            this.error = err.response.data.message;
-          } else if (err.message.includes('authorized')) {
-            this.logout();
-            this.error = this.$t('messages.youNeedToLogIn');
-          } else {
-            this.error = this.$t('messages.somethingWentWrong');
-          }
-        }
-      },
-      updateCity(id){
-        this.$router.push(`/update/${id}`);
-      },
-      comeBack(){
-        this.$router.push('/');
-      },
-
-    },
-    async mounted() {
+  computed: {
+    ...mapState({
+      user: (state) => state.users.user,
+      city: (state) => state.cities.city,
+    }),
+  },
+  methods: {
+    ...mapActions(['fetchCityWithId', 'deleteCity', 'logout']),
+    async deleteCityWithId(id) {
       try {
-        let result = await this.fetchCityWithId(this.$route.params.id);
+        const result = await this.deleteCity(id);
+        if (result) this.$router.push('/');
       } catch (err) {
-        if(err.response) {
-          if(err.response.status === 400) {
-            this.$router.push('/notfound');
-          }
-
+        if (err.response) {
           this.error = err.response.data.message;
+        } else if (err.message.includes('authorized')) {
+          this.logout();
+          this.error = this.$t('messages.youNeedToLogIn');
         } else {
           this.error = this.$t('messages.somethingWentWrong');
         }
       }
+    },
+    updateCity(id) {
+      this.$router.push(`/update/${id}`);
+    },
+    comeBack() {
+      this.$router.push('/');
+    },
+
+  },
+  async mounted() {
+    try {
+      await this.fetchCityWithId(this.$route.params.id);
+    } catch (err) {
+      if (err.response) {
+        if (err.response.status === 400) {
+          this.$router.push('/notfound');
+        }
+
+        this.error = err.response.data.message;
+      } else {
+        this.error = this.$t('messages.somethingWentWrong');
+      }
     }
-  }
+  },
+};
 </script>

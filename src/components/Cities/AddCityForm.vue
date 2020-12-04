@@ -74,11 +74,11 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
-import City from "@/models/City";
+import { mapActions, mapState } from 'vuex';
+import City from '@/models/City';
 
 export default {
-  data: ()=> ({
+  data: () => ({
     valid: false,
     name: '',
     location: '',
@@ -89,52 +89,52 @@ export default {
     error: '',
   }),
 
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
       // access to component instance via `vm`
-      if(!vm.user) vm.error = vm.$t('messages.accessForbiten');
-    })
+      if (!vm.user) vm.error = vm.$t('messages.accessForbiten');
+    });
   },
 
   computed: {
     ...mapState({
-      user: state => state.users.user
+      user: (state) => state.users.user,
     }),
     nameRules() {
-      return [ v => v.trim().length > 0 || this.$t('addCity.nameRequired')]
+      return [(v) => v.trim().length > 0 || this.$t('addCity.nameRequired')];
     },
     locationRules() {
-      return [ v => v.trim().length > 0 || this.$t('addCity.locationRequired')];
+      return [(v) => v.trim().length > 0 || this.$t('addCity.locationRequired')];
     },
     populationRules() {
-      return [ v => v.trim().length > 0 || this.$t('addCity.populationRequiured')];
+      return [(v) => v.trim().length > 0 || this.$t('addCity.populationRequiured')];
     },
     areaRules() {
-      return [ v => v.trim().length > 0 || this.$t('addCity.areaRequired')];
+      return [(v) => v.trim().length > 0 || this.$t('addCity.areaRequired')];
     },
     foundRules() {
-      return [v => v.trim().length > 0 || this.$t('addCity.foundReuired')]
-    }
+      return [(v) => v.trim().length > 0 || this.$t('addCity.foundReuired')];
+    },
   },
   methods: {
     ...mapActions(['addCity', 'logout']),
-    submit(){
+    submit() {
       this.$refs.form.validate();
-      if(this.valid) {
+      if (this.valid) {
         this.add();
       }
     },
     async add() {
       try {
         const city = new City(this.name, this.location,
-            this.population, this.area, this.found);
+          this.population, this.area, this.found);
         console.log('city', city);
-        let result = await this.addCity(city);
-        if(result) this.addingStatus = this.$t('messages.theCityAdded');
+        const result = await this.addCity(city);
+        if (result) this.addingStatus = this.$t('messages.theCityAdded');
       } catch (err) {
-        if(err.response) {
+        if (err.response) {
           this.addingStatus = err.response.data.message;
-        } else if (err.message.includes('authorized')){
+        } else if (err.message.includes('authorized')) {
           this.logout();
           this.error = this.$t('messages.youNeedToLogIn');
         } else {
@@ -144,7 +144,7 @@ export default {
     },
     comeBack() {
       this.$router.push('/');
-    }
-  }
-}
+    },
+  },
+};
 </script>

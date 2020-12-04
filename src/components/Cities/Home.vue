@@ -25,28 +25,28 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   components: {
     'city-list': () => import('@/components/Cities/CitiesList'),
-    'city-serch': () => import('@/components/Cities/Search')
+    'city-serch': () => import('@/components/Cities/Search'),
   },
   data: () => ({
-    error: ''
+    error: '',
   }),
   computed: mapState({
-    user: state => state.users.user
+    user: (state) => state.users.user,
   }),
   methods: {
-    GoToAddCityForm(){
+    GoToAddCityForm() {
       this.$router.push('/addcity');
     },
 
-    setError(event){
+    setError(event) {
       this.error = event;
     },
-  }
-}
+  },
+};
 
 </script>

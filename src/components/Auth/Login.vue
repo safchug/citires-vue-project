@@ -44,37 +44,37 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
-import LoginData from "@/models/LoginData";
+import { mapActions } from 'vuex';
+import LoginData from '@/models/LoginData';
 
 export default {
-  data:()=> ({
+  data: () => ({
     valid: false,
     mail: '',
     password: '',
     inputType: 'password',
-    error: ''
+    error: '',
   }),
 
   computed: {
     mailRules() {
       return [
-          v => !!v || this.$t('loginForm.mailRequired'),
-          v => /.+@.+/.test(v) || this.$t('loginForm.mailMustBeValid')];
+        (v) => !!v || this.$t('loginForm.mailRequired'),
+        (v) => /.+@.+/.test(v) || this.$t('loginForm.mailMustBeValid')];
     },
     passwordRules() {
       return [
-        v => !!v || this.$t('loginForm.passwordRequired'),
-        v => v.trim().length >= 6 || this.$t('loginForm.passwordMustBeValid'),
+        (v) => !!v || this.$t('loginForm.passwordRequired'),
+        (v) => v.trim().length >= 6 || this.$t('loginForm.passwordMustBeValid'),
       ];
-    }
+    },
   },
 
   methods: {
     ...mapActions(['login']),
     submit() {
       this.$refs.form.validate();
-      if(this.valid) {
+      if (this.valid) {
         this.loginUser();
       }
     },
@@ -84,15 +84,14 @@ export default {
         const result = await this.login(loginData);
 
         if (result) this.$router.push('/');
-
       } catch (err) {
-        if(err.response) {
+        if (err.response) {
           this.error = err.response.data.message;
         } else {
           this.error = this.$t('messages.somethingWentWrong');
         }
       }
     },
-  }
-}
+  },
+};
 </script>

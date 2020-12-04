@@ -12,27 +12,27 @@
 
 <script>
 
-import {mapActions} from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
 
   data: () => ({
-    search: ''
+    search: '',
   }),
 
   methods: {
     ...mapActions(['fetchCities']),
-    async filterCities(){
+    async filterCities() {
       try {
         console.log(this.search);
         await this.fetchCities(this.search);
       } catch (err) {
-        if(err.response) {
+        if (err.response) {
           this.$router.push('/notfound');
         }
       }
-    }
-  }
-}
+    },
+  },
+};
 
 </script>

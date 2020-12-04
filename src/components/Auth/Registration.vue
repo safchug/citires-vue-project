@@ -112,8 +112,8 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex';
-import User from "@/models/User";
+import { mapActions } from 'vuex';
+import User from '@/models/User';
 
 export default {
   data: () => ({
@@ -128,67 +128,66 @@ export default {
     password: '',
     passwordRepition: '',
     inputType: 'password',
-
   }),
   computed: {
     nameRules() {
       return [
-        v => !!v || this.$t('registration.nameRequired'),
-        v => v.trim().length > 0 || this.$t('registration.nameMustBeValid'),
-        v => v.length <= 20 || this.$t('registration.nameMustBeLess'),
-      ]
+        (v) => !!v || this.$t('registration.nameRequired'),
+        (v) => v.trim().length > 0 || this.$t('registration.nameMustBeValid'),
+        (v) => v.length <= 20 || this.$t('registration.nameMustBeLess'),
+      ];
     },
 
     emailRules() {
       return [
-        v => !!v || this.$t('registration.mailRequired'),
-        v => /.+@.+/.test(v) || this.$t('registration.mailMustBeValid')
-      ]
+        (v) => !!v || this.$t('registration.mailRequired'),
+        (v) => /.+@.+/.test(v) || this.$t('registration.mailMustBeValid'),
+      ];
     },
 
     birthdayRules() {
       return [
-        v => !!v || this.$t('registration.birthdayRequired'),
-      ]
+        (v) => !!v || this.$t('registration.birthdayRequired'),
+      ];
     },
 
     passwordRules() {
       return [
-        v => !!v || this.$t('registration.passwordRequired'),
-        v => v.length >= 6 || this.$t('registration.passwordMustBeMore')
-      ]
+        (v) => !!v || this.$t('registration.passwordRequired'),
+        (v) => v.length >= 6 || this.$t('registration.passwordMustBeMore'),
+      ];
     },
 
     repeatPasswordRules() {
       return [
-        v => !!v || this.$t('registration.repeatPaswordRequired'),
-        v => this.password === this.passwordRepition || this.$t('registration.passwordsDontMatch')
+        (v) => !!v || this.$t('registration.repeatPaswordRequired'),
+        () => this.password === this.passwordRepition || this.$t('registration.passwordsDontMatch'),
       ];
-    }
+    },
   },
   methods: {
     ...mapActions(['regist']),
-    submit(){
+    submit() {
       this.$refs.form.validate();
-      if(this.valid){
+      if (this.valid) {
         this.registUser();
       }
     },
     async registUser() {
       const user = new User(this.firstname, this.lastname,
-          this.mail, this.birthday, this.password);
+        this.mail, this.birthday, this.password);
       try {
-        let result = await this.regist(user);
-        if(result) this.isRegistered = true;
+        const result = await this.regist(user);
+        if (result) this.isRegistered = true;
       } catch (err) {
-        if(err.response) {
+        if (err.response) {
           this.error = err.response.data.message;
         } else {
           this.error = this.$t('messages.somethingWentWrong');
         }
       }
-    }
-  }
+    },
+  },
 
-}
+};
 </script>
