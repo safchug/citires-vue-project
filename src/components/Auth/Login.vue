@@ -12,6 +12,7 @@
               :rules="mailRules"
               :label="$t('loginForm.mail')"
               required
+              @change="checkIncorectMail"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -26,6 +27,7 @@
               :rules="passwordRules"
               :label="$t('loginForm.password')"
               required
+              @change="checkIncorectPassword"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -52,6 +54,8 @@ export default {
     valid: false,
     mail: '',
     password: '',
+    incorectMail: '',
+    incorectPassword: '',
     inputType: 'password',
     error: '',
   }),
@@ -60,12 +64,15 @@ export default {
     mailRules() {
       return [
         (v) => !!v || this.$t('loginForm.mailRequired'),
-        (v) => /.+@.+/.test(v) || this.$t('loginForm.mailMustBeValid')];
+        (v) => /.+@.+/.test(v) || this.$t('loginForm.mailMustBeValid'),
+        () => !this.incorectMail || this.$t('loginForm.mailDoesntExist'),
+      ];
     },
     passwordRules() {
       return [
         (v) => !!v || this.$t('loginForm.passwordRequired'),
         (v) => v.trim().length >= 6 || this.$t('loginForm.passwordMustBeValid'),
+        () => !this.incorectPassword || this.$t('loginForm.wrongPassword'),
       ];
     },
   },
@@ -86,9 +93,34 @@ export default {
         if (result) this.$router.push('/');
       } catch (err) {
         if (err.response) {
-          this.error = err.response.data.message;
+          const { message } = err.response.data;
+          if (err.response.status === 401) {
+            if (message.includes('user')) {
+              this.incorectMail = this.mail;
+              this.$refs.form.validate();
+            } else {
+              this.incorectPassword = this.password;
+              this.$refs.form.validate();
+            }
+          } else {
+            this.error = message;
+          }
         } else {
           this.error = 'Something went wrong';
+        }
+      }
+    },
+    checkIncorectMail() {
+      if (this.incorectMail) {
+        if (this.mail !== this.incorectMail) {
+          this.incorectMail = '';
+        }
+      }
+    },
+    checkIncorectPassword() {
+      if (this.incorectPassword) {
+        if (this.password !== this.incorectPassword) {
+          this.incorectPassword = '';
         }
       }
     },

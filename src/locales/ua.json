@@ -11,8 +11,10 @@
     "password": "Пароль",
     "mailRequired": "Потрібно ввести Емейл",
     "mailMustBeValid": "Емейл має бути валідним",
+    "mailDoesntExist": "Користувач з таким емейлом не існує",
     "passwordRequired": "Пароль обов'язковий",
-    "passwordMustBeValid": "Пароль має складатися більше ніж з 6 символів"
+    "passwordMustBeValid": "Пароль має складатися більше ніж з 6 символів",
+    "wrongPassword": "Пароль не правильний"
   },
   "registration" : {
     "register": "Зареєструвати",

@@ -11,8 +11,10 @@
     "password": "Password",
     "mailRequired": "E-mail is required",
     "mailMustBeValid": "E-mail must be valid",
+    "mailDoesntExist": "The user with this email doesn`t exist",
     "passwordRequired": "Password is required",
-    "passwordMustBeValid": "Password must consist more than 6 chars"
+    "passwordMustBeValid": "Password must consist more than 6 chars",
+    "wrongPassword": "The password is wrong"
   },
   "registration" : {
     "register": "Register",
