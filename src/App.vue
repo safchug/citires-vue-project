@@ -54,6 +54,7 @@ export default {
   data: () => ({
     //
     drawer: true,
+    isTokenValid: true,
   }),
   computed: {
     ...mapState({

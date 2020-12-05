@@ -64,6 +64,7 @@
               :rules="emailRules"
               :label="$t('registration.mail')"
               required
+              @change="checkWhtherMailExist"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -125,9 +126,11 @@ export default {
     lastname: '',
     birthday: '',
     mail: '',
+    existedMail: '',
     password: '',
     passwordRepition: '',
     inputType: 'password',
+
   }),
   computed: {
     nameRules() {
@@ -142,6 +145,7 @@ export default {
       return [
         (v) => !!v || this.$t('registration.mailRequired'),
         (v) => /.+@.+/.test(v) || this.$t('registration.mailMustBeValid'),
+        (v) => v !== this.existedMail || this.$t('registration.mailIsTaken'),
       ];
     },
 
@@ -181,13 +185,24 @@ export default {
         if (result) this.isRegistered = true;
       } catch (err) {
         if (err.response) {
-          this.error = err.response.data.message;
+          if (err.response.status === 409) {
+            this.existedMail = this.mail;
+            this.$refs.form.validate();
+          } else {
+            this.error = err.response.data.message;
+          }
         } else {
           this.error = this.$t('messages.somethingWentWrong');
         }
       }
     },
+    checkWhtherMailExist() {
+      if (this.existedMail) {
+        if (this.mail !== this.existedMail) {
+          this.existedMail = '';
+        }
+      }
+    },
   },
-
 };
 </script>

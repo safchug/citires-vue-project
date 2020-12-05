@@ -36,7 +36,7 @@ export default {
       const response = await await axiosInstance({
         method: 'delete',
         url: `cities/${id}`,
-        headers: { Authorization: `beaber ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       ctx.commit('deleteCity', id);
       return response;
@@ -47,7 +47,7 @@ export default {
       return axiosInstance({
         method: 'put',
         url: `/cities/${obj.id}`,
-        headers: { Authorization: `beaber ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
         data: obj.city,
       });
     },
@@ -57,7 +57,7 @@ export default {
       return axiosInstance({
         method: 'post',
         url: '/cities',
-        headers: { Authorization: `beaber ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
         data: city,
       });
     },

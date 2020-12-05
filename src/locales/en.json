@@ -27,6 +27,7 @@
     "nameMustBeLess": "Name must be less than 20 characters",
     "mailRequired": "E-mail is required",
     "mailMustBeValid": "E-mail must be valid",
+    "mailIsTaken": "this email is already taken",
     "birthdayRequired": "Birthday is required",
     "passwordRequired": "Password is required",
     "passwordMustBeMore": "Password must be more than 6 characters",

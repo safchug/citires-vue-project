@@ -25,20 +25,23 @@ export default {
       return response;
     },
     async auth(ctx) {
+      /* I think this method doesnt need to return any messages to user
+      * in cases when token is not valid the user will not just be loginned.
+      * */
       try {
         const token = localStorage.getItem('accs_tkn');
         if (token) {
           const response = await axiosInstance({
             method: 'post',
             url: '/auth',
-            headers: { Authorization: `beaber ${token}` },
+            headers: { Authorization: `Bearer ${token}` },
             body: {},
           });
 
           if (response.status === 200) {
             ctx.commit('setUser', response.data);
           } else {
-            localStorage.removeItem('accs_tkn');
+            throw new Error();
           }
         }
       } catch (err) {

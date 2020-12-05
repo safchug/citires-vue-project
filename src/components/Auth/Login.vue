@@ -88,7 +88,7 @@ export default {
         if (err.response) {
           this.error = err.response.data.message;
         } else {
-          this.error = this.$t('messages.somethingWentWrong');
+          this.error = 'Something went wrong';
         }
       }
     },
